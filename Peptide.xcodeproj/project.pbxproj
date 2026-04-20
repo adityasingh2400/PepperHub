@@ -1,0 +1,688 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		0C1D77D43F4A0920459F42CB /* PepperContextBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 648CAF1BCC80EE0DA43023CC /* PepperContextBuilder.swift */; };
+		0C8A239A8443142568C3E911 /* PepperService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DC9DAA4ACFF3CB8267F8DB7 /* PepperService.swift */; };
+		21703A41D75774EE32171604 /* RevenueCat in Frameworks */ = {isa = PBXBuildFile; productRef = 3747C358D2AD7863132D77FB /* RevenueCat */; };
+		27581A45ECFCBC818FBDEAEA /* TrackTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E316347F2770670754F356D8 /* TrackTabView.swift */; };
+		341ED8BBA7662ED854D24444 /* RevenueCatUI in Frameworks */ = {isa = PBXBuildFile; productRef = 5540A5A0FF78422BA495CF3E /* RevenueCatUI */; };
+		3595B0C2116E96258D63CE77 /* LottieView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 714AF4E8BC9F1C775607B76B /* LottieView.swift */; };
+		36496D06831957F73E0BCBF9 /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = 4259C646A81323FD332495F9 /* Lottie */; };
+		3B10F0E05CF40FFC9684D6F8 /* SyncService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 951AE98846C374F5BECFA160 /* SyncService.swift */; };
+		41E0CFCB87D46D99DC4A1D28 /* Supabase in Frameworks */ = {isa = PBXBuildFile; productRef = 6101776D06AFE01551CD1B66 /* Supabase */; };
+		54AB0800CFDB72E621879B4D /* PurchasesManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EECE96E8FD10C2E3E738D13 /* PurchasesManager.swift */; };
+		55EB6662725107348C4FC870 /* ExerciseDatabase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E7CF0EAF1AA35855DA9CADD /* ExerciseDatabase.swift */; };
+		5F91630A4E042D1D5239A6A0 /* OpenFoodFactsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71A1FC4EE0034C6A557A5506 /* OpenFoodFactsService.swift */; };
+		620DB762374BD554E02861BF /* MacroTrendChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4ED62FCBA3553F8E2C49ED3 /* MacroTrendChart.swift */; };
+		634D165186B12B04169FB7EA /* ColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8629AC5349E466A634E49CB9 /* ColorExtension.swift */; };
+		6BD841B514DE4AABAEDA3773 /* OnboardingCreateAccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8240F06BC312D3478B2E2F66 /* OnboardingCreateAccountView.swift */; };
+		6EE97F7B9AB12AF4F5C4C477 /* FoodTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22B36B0B6D4699B48F500610 /* FoodTabView.swift */; };
+		7546DB80CD5A3A000505D8E1 /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB0150D0E02B61CFA97BBFEA /* AppState.swift */; };
+		7F0AF604F49071432B1A0D87 /* PrivacyPolicyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEA62E288498A45ECB24D384 /* PrivacyPolicyView.swift */; };
+		8000882C43C1A7CC1DE2E3A7 /* NudgeEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5749C3D684B1992D8AE65B5F /* NudgeEngine.swift */; };
+		8881F38842433B366966770D /* MainTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E90F5C9CC4F01BEAFFFC864 /* MainTabView.swift */; };
+		892124118AD69972FB39F762 /* OnboardingTrialView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F85AE984B455CD7B3002A97 /* OnboardingTrialView.swift */; };
+		932AB36FD0950BD7DDA83F04 /* PepperModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DEE0D62385E013F3E74DA04 /* PepperModels.swift */; };
+		94E563CCA405EBAD146DC369 /* TodayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDCF3995C18E09C086B31D0D /* TodayView.swift */; };
+		A7B2FC999B13644600B6E78A /* OnboardingNumbersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B3B069A3CD076DAAE02B5E4 /* OnboardingNumbersView.swift */; };
+		A82EC9F4D8EEFFA3D2919545 /* ResearchListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 956466801FBBCC30816247FC /* ResearchListView.swift */; };
+		AE52EB46C2F4E043B174BBE6 /* NotificationScheduler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 307D6C67FEE3B5A964C881E7 /* NotificationScheduler.swift */; };
+		AF825FC006426E88FCAFFE47 /* PeptideApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78D52DE6232789F2ED1E60EE /* PeptideApp.swift */; };
+		B07D91F7CD756A014CE7939F /* lottie_success.json in Resources */ = {isa = PBXBuildFile; fileRef = 0A36C84F71999C76F3086939 /* lottie_success.json */; };
+		B351BF0B1DABD8ED6534FDF7 /* AuthManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31ACAA9EE356CB22FDD6D04A /* AuthManager.swift */; };
+		B68C3E70C523CDCDE23EDDFB /* PaywallView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94664F5884BE502877EF5DD9 /* PaywallView.swift */; };
+		C2542417C91B2DC45C51215F /* SplashView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 884BF69D72044410038548F2 /* SplashView.swift */; };
+		C32373CE8E8A1C91CBB1955D /* OnboardingFlowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D0827F65CF977B525D00EEC /* OnboardingFlowView.swift */; };
+		C432D36EEFC8DFFE315EB3E8 /* APIKeys.swift.example in Resources */ = {isa = PBXBuildFile; fileRef = DFD346FCAF6AADDF330F4A97 /* APIKeys.swift.example */; };
+		C80E7009798DA54693B9C8FC /* SideEffectSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 640BA05A60D6E614713F44D3 /* SideEffectSheet.swift */; };
+		D025907A95742B73F594ADF6 /* AskPepperView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58D95FFAD7DEAB4958C16CB2 /* AskPepperView.swift */; };
+		D3D6EAB137698AEC56A96F81 /* ProtocolTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C81281B996D0E617F44A085F /* ProtocolTabView.swift */; };
+		D477F76133F4F12EF70C87BA /* OnboardingBodyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C7560D8BCF42694B0ACDA4C /* OnboardingBodyView.swift */; };
+		DB11EA057504EBA160F95C55 /* SwiftDataModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 452EA4D408F6C222548AFE28 /* SwiftDataModels.swift */; };
+		E970DC4E918F28A3F53274A9 /* OnboardingProtocolView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BE1BEA9EC2097A18D833D94 /* OnboardingProtocolView.swift */; };
+		EA130F1EF1600AD22B036522 /* PostHog in Frameworks */ = {isa = PBXBuildFile; productRef = A417C4F2E3ECF95B02E08DCB /* PostHog */; };
+		EAA3579483953D71C5B20780 /* Compound.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DB6327A6B6BE70607338173 /* Compound.swift */; };
+		F1F465BEEF7BF4E117DA70B7 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2EE90CF0787BD8DC1D4F59A /* SettingsView.swift */; };
+		F94374DCCDC4CE7A4F271880 /* SupabaseClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15DB48CB21F5DA7F35B6966C /* SupabaseClient.swift */; };
+		FBE740CF4A901B737C9BEEAA /* Analytics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A13A112102DD1749034842B /* Analytics.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		0A36C84F71999C76F3086939 /* lottie_success.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = lottie_success.json; sourceTree = "<group>"; };
+		15DB48CB21F5DA7F35B6966C /* SupabaseClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SupabaseClient.swift; sourceTree = "<group>"; };
+		1B3B069A3CD076DAAE02B5E4 /* OnboardingNumbersView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingNumbersView.swift; sourceTree = "<group>"; };
+		1C7560D8BCF42694B0ACDA4C /* OnboardingBodyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingBodyView.swift; sourceTree = "<group>"; };
+		1DC9DAA4ACFF3CB8267F8DB7 /* PepperService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PepperService.swift; sourceTree = "<group>"; };
+		1DEE0D62385E013F3E74DA04 /* PepperModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PepperModels.swift; sourceTree = "<group>"; };
+		1EECE96E8FD10C2E3E738D13 /* PurchasesManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurchasesManager.swift; sourceTree = "<group>"; };
+		22B36B0B6D4699B48F500610 /* FoodTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodTabView.swift; sourceTree = "<group>"; };
+		2E7CF0EAF1AA35855DA9CADD /* ExerciseDatabase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseDatabase.swift; sourceTree = "<group>"; };
+		2F85AE984B455CD7B3002A97 /* OnboardingTrialView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingTrialView.swift; sourceTree = "<group>"; };
+		307D6C67FEE3B5A964C881E7 /* NotificationScheduler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationScheduler.swift; sourceTree = "<group>"; };
+		31ACAA9EE356CB22FDD6D04A /* AuthManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthManager.swift; sourceTree = "<group>"; };
+		452EA4D408F6C222548AFE28 /* SwiftDataModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftDataModels.swift; sourceTree = "<group>"; };
+		4A0D7176529AED3124436F30 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		4A13A112102DD1749034842B /* Analytics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Analytics.swift; sourceTree = "<group>"; };
+		4BE1BEA9EC2097A18D833D94 /* OnboardingProtocolView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingProtocolView.swift; sourceTree = "<group>"; };
+		4DB6327A6B6BE70607338173 /* Compound.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Compound.swift; sourceTree = "<group>"; };
+		5749C3D684B1992D8AE65B5F /* NudgeEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NudgeEngine.swift; sourceTree = "<group>"; };
+		58D95FFAD7DEAB4958C16CB2 /* AskPepperView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AskPepperView.swift; sourceTree = "<group>"; };
+		5D0827F65CF977B525D00EEC /* OnboardingFlowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingFlowView.swift; sourceTree = "<group>"; };
+		5E90F5C9CC4F01BEAFFFC864 /* MainTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabView.swift; sourceTree = "<group>"; };
+		640BA05A60D6E614713F44D3 /* SideEffectSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideEffectSheet.swift; sourceTree = "<group>"; };
+		648CAF1BCC80EE0DA43023CC /* PepperContextBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PepperContextBuilder.swift; sourceTree = "<group>"; };
+		714AF4E8BC9F1C775607B76B /* LottieView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LottieView.swift; sourceTree = "<group>"; };
+		71A1FC4EE0034C6A557A5506 /* OpenFoodFactsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenFoodFactsService.swift; sourceTree = "<group>"; };
+		78D52DE6232789F2ED1E60EE /* PeptideApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeptideApp.swift; sourceTree = "<group>"; };
+		8240F06BC312D3478B2E2F66 /* OnboardingCreateAccountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingCreateAccountView.swift; sourceTree = "<group>"; };
+		8629AC5349E466A634E49CB9 /* ColorExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorExtension.swift; sourceTree = "<group>"; };
+		884BF69D72044410038548F2 /* SplashView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashView.swift; sourceTree = "<group>"; };
+		94664F5884BE502877EF5DD9 /* PaywallView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaywallView.swift; sourceTree = "<group>"; };
+		951AE98846C374F5BECFA160 /* SyncService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncService.swift; sourceTree = "<group>"; };
+		956466801FBBCC30816247FC /* ResearchListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResearchListView.swift; sourceTree = "<group>"; };
+		AB0150D0E02B61CFA97BBFEA /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
+		AEA62E288498A45ECB24D384 /* PrivacyPolicyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivacyPolicyView.swift; sourceTree = "<group>"; };
+		C4ED62FCBA3553F8E2C49ED3 /* MacroTrendChart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacroTrendChart.swift; sourceTree = "<group>"; };
+		C81281B996D0E617F44A085F /* ProtocolTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProtocolTabView.swift; sourceTree = "<group>"; };
+		D2EE90CF0787BD8DC1D4F59A /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		DC1B9C8E49674E37ABCC1461 /* Peptide.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = Peptide.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		DDCF3995C18E09C086B31D0D /* TodayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayView.swift; sourceTree = "<group>"; };
+		DFD346FCAF6AADDF330F4A97 /* APIKeys.swift.example */ = {isa = PBXFileReference; path = APIKeys.swift.example; sourceTree = "<group>"; };
+		E316347F2770670754F356D8 /* TrackTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackTabView.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		6E4FCDB62879283F72263758 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				41E0CFCB87D46D99DC4A1D28 /* Supabase in Frameworks */,
+				21703A41D75774EE32171604 /* RevenueCat in Frameworks */,
+				341ED8BBA7662ED854D24444 /* RevenueCatUI in Frameworks */,
+				36496D06831957F73E0BCBF9 /* Lottie in Frameworks */,
+				EA130F1EF1600AD22B036522 /* PostHog in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		0F68A98D60EE1535FE6F1529 /* Supporting */ = {
+			isa = PBXGroup;
+			children = (
+				DFD346FCAF6AADDF330F4A97 /* APIKeys.swift.example */,
+			);
+			path = Supporting;
+			sourceTree = "<group>";
+		};
+		14EBE4F2B58D02DB7D5828F3 /* Food */ = {
+			isa = PBXGroup;
+			children = (
+				22B36B0B6D4699B48F500610 /* FoodTabView.swift */,
+			);
+			path = Food;
+			sourceTree = "<group>";
+		};
+		1D231F32BA9B4E51EAB32127 /* Supporting */ = {
+			isa = PBXGroup;
+			children = (
+				4A0D7176529AED3124436F30 /* Info.plist */,
+			);
+			path = Supporting;
+			sourceTree = "<group>";
+		};
+		2629C540FAB1B57046F44305 /* Research */ = {
+			isa = PBXGroup;
+			children = (
+				956466801FBBCC30816247FC /* ResearchListView.swift */,
+			);
+			path = Research;
+			sourceTree = "<group>";
+		};
+		406C13CE19A4E3C3F01443AD /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				4DB6327A6B6BE70607338173 /* Compound.swift */,
+				452EA4D408F6C222548AFE28 /* SwiftDataModels.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		47510E2E5B97F00DACFDD1B0 = {
+			isa = PBXGroup;
+			children = (
+				FABA231287DC44213A3D8DFD /* Resources */,
+				708F8B8FC8E2240706FC4FC2 /* Sources */,
+				1D231F32BA9B4E51EAB32127 /* Supporting */,
+				80E5D28D6E7152E2D376F84D /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		5136AC7499D434780E368920 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				4A13A112102DD1749034842B /* Analytics.swift */,
+				31ACAA9EE356CB22FDD6D04A /* AuthManager.swift */,
+				2E7CF0EAF1AA35855DA9CADD /* ExerciseDatabase.swift */,
+				307D6C67FEE3B5A964C881E7 /* NotificationScheduler.swift */,
+				5749C3D684B1992D8AE65B5F /* NudgeEngine.swift */,
+				71A1FC4EE0034C6A557A5506 /* OpenFoodFactsService.swift */,
+				648CAF1BCC80EE0DA43023CC /* PepperContextBuilder.swift */,
+				1DEE0D62385E013F3E74DA04 /* PepperModels.swift */,
+				1DC9DAA4ACFF3CB8267F8DB7 /* PepperService.swift */,
+				1EECE96E8FD10C2E3E738D13 /* PurchasesManager.swift */,
+				15DB48CB21F5DA7F35B6966C /* SupabaseClient.swift */,
+				951AE98846C374F5BECFA160 /* SyncService.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		67B983F1E9128BB74725E7DD /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				AEA62E288498A45ECB24D384 /* PrivacyPolicyView.swift */,
+				D2EE90CF0787BD8DC1D4F59A /* SettingsView.swift */,
+			);
+			path = Settings;
+			sourceTree = "<group>";
+		};
+		708F8B8FC8E2240706FC4FC2 /* Sources */ = {
+			isa = PBXGroup;
+			children = (
+				F6ECDFAD38157713D6F847C4 /* App */,
+				406C13CE19A4E3C3F01443AD /* Models */,
+				5136AC7499D434780E368920 /* Services */,
+				0F68A98D60EE1535FE6F1529 /* Supporting */,
+				A31D2DBC8ACB838EDC70FBF0 /* Views */,
+			);
+			path = Sources;
+			sourceTree = "<group>";
+		};
+		80600AADB2125E6217355668 /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				714AF4E8BC9F1C775607B76B /* LottieView.swift */,
+				C4ED62FCBA3553F8E2C49ED3 /* MacroTrendChart.swift */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
+		80E5D28D6E7152E2D376F84D /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				DC1B9C8E49674E37ABCC1461 /* Peptide.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		972BEF58AC5DD9C8BA22F412 /* AskPepper */ = {
+			isa = PBXGroup;
+			children = (
+				58D95FFAD7DEAB4958C16CB2 /* AskPepperView.swift */,
+			);
+			path = AskPepper;
+			sourceTree = "<group>";
+		};
+		A31D2DBC8ACB838EDC70FBF0 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				972BEF58AC5DD9C8BA22F412 /* AskPepper */,
+				80600AADB2125E6217355668 /* Components */,
+				14EBE4F2B58D02DB7D5828F3 /* Food */,
+				D882B1AABDF0D7103D8EC3D4 /* Onboarding */,
+				D949030410B93D98703031F5 /* Paywall */,
+				CA487E671FFE0804BB40DCE1 /* Protocol */,
+				2629C540FAB1B57046F44305 /* Research */,
+				67B983F1E9128BB74725E7DD /* Settings */,
+				F17194B336DF13AFAE6EEFA3 /* Today */,
+				F2F49CE1FA1BEB7D99E4A87F /* Track */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		CA487E671FFE0804BB40DCE1 /* Protocol */ = {
+			isa = PBXGroup;
+			children = (
+				C81281B996D0E617F44A085F /* ProtocolTabView.swift */,
+			);
+			path = Protocol;
+			sourceTree = "<group>";
+		};
+		D882B1AABDF0D7103D8EC3D4 /* Onboarding */ = {
+			isa = PBXGroup;
+			children = (
+				1C7560D8BCF42694B0ACDA4C /* OnboardingBodyView.swift */,
+				8240F06BC312D3478B2E2F66 /* OnboardingCreateAccountView.swift */,
+				5D0827F65CF977B525D00EEC /* OnboardingFlowView.swift */,
+				1B3B069A3CD076DAAE02B5E4 /* OnboardingNumbersView.swift */,
+				4BE1BEA9EC2097A18D833D94 /* OnboardingProtocolView.swift */,
+				2F85AE984B455CD7B3002A97 /* OnboardingTrialView.swift */,
+			);
+			path = Onboarding;
+			sourceTree = "<group>";
+		};
+		D949030410B93D98703031F5 /* Paywall */ = {
+			isa = PBXGroup;
+			children = (
+				94664F5884BE502877EF5DD9 /* PaywallView.swift */,
+			);
+			path = Paywall;
+			sourceTree = "<group>";
+		};
+		F17194B336DF13AFAE6EEFA3 /* Today */ = {
+			isa = PBXGroup;
+			children = (
+				640BA05A60D6E614713F44D3 /* SideEffectSheet.swift */,
+				DDCF3995C18E09C086B31D0D /* TodayView.swift */,
+			);
+			path = Today;
+			sourceTree = "<group>";
+		};
+		F2F49CE1FA1BEB7D99E4A87F /* Track */ = {
+			isa = PBXGroup;
+			children = (
+				E316347F2770670754F356D8 /* TrackTabView.swift */,
+			);
+			path = Track;
+			sourceTree = "<group>";
+		};
+		F6ECDFAD38157713D6F847C4 /* App */ = {
+			isa = PBXGroup;
+			children = (
+				AB0150D0E02B61CFA97BBFEA /* AppState.swift */,
+				8629AC5349E466A634E49CB9 /* ColorExtension.swift */,
+				5E90F5C9CC4F01BEAFFFC864 /* MainTabView.swift */,
+				78D52DE6232789F2ED1E60EE /* PeptideApp.swift */,
+				884BF69D72044410038548F2 /* SplashView.swift */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		FABA231287DC44213A3D8DFD /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				0A36C84F71999C76F3086939 /* lottie_success.json */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		7FCBD66D71F7E1C3FE33F38E /* Peptide */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = AF3AE4673E76996144620021 /* Build configuration list for PBXNativeTarget "Peptide" */;
+			buildPhases = (
+				64E7BCD6AA2082D6F3DC5743 /* Sources */,
+				F84B4AC88E9698246134151C /* Resources */,
+				6E4FCDB62879283F72263758 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Peptide;
+			packageProductDependencies = (
+				6101776D06AFE01551CD1B66 /* Supabase */,
+				3747C358D2AD7863132D77FB /* RevenueCat */,
+				5540A5A0FF78422BA495CF3E /* RevenueCatUI */,
+				4259C646A81323FD332495F9 /* Lottie */,
+				A417C4F2E3ECF95B02E08DCB /* PostHog */,
+			);
+			productName = Peptide;
+			productReference = DC1B9C8E49674E37ABCC1461 /* Peptide.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		1A354FEE4113C1C899E9AE8C /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1600;
+				TargetAttributes = {
+				};
+			};
+			buildConfigurationList = 987784B9CA352B80914746D9 /* Build configuration list for PBXProject "Peptide" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = 47510E2E5B97F00DACFDD1B0;
+			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				382B3CD654373BC578BEBF60 /* XCRemoteSwiftPackageReference "lottie-ios" */,
+				77DCAF9ECCDA4857709E490D /* XCRemoteSwiftPackageReference "posthog-ios" */,
+				658BDC87391E7B0EE42DD68D /* XCRemoteSwiftPackageReference "purchases-ios-spm" */,
+				CDCE47361573688F5CAD715D /* XCRemoteSwiftPackageReference "supabase-swift" */,
+			);
+			preferredProjectObjectVersion = 77;
+			productRefGroup = 80E5D28D6E7152E2D376F84D /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				7FCBD66D71F7E1C3FE33F38E /* Peptide */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		F84B4AC88E9698246134151C /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C432D36EEFC8DFFE315EB3E8 /* APIKeys.swift.example in Resources */,
+				B07D91F7CD756A014CE7939F /* lottie_success.json in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		64E7BCD6AA2082D6F3DC5743 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FBE740CF4A901B737C9BEEAA /* Analytics.swift in Sources */,
+				7546DB80CD5A3A000505D8E1 /* AppState.swift in Sources */,
+				D025907A95742B73F594ADF6 /* AskPepperView.swift in Sources */,
+				B351BF0B1DABD8ED6534FDF7 /* AuthManager.swift in Sources */,
+				634D165186B12B04169FB7EA /* ColorExtension.swift in Sources */,
+				EAA3579483953D71C5B20780 /* Compound.swift in Sources */,
+				55EB6662725107348C4FC870 /* ExerciseDatabase.swift in Sources */,
+				6EE97F7B9AB12AF4F5C4C477 /* FoodTabView.swift in Sources */,
+				3595B0C2116E96258D63CE77 /* LottieView.swift in Sources */,
+				620DB762374BD554E02861BF /* MacroTrendChart.swift in Sources */,
+				8881F38842433B366966770D /* MainTabView.swift in Sources */,
+				AE52EB46C2F4E043B174BBE6 /* NotificationScheduler.swift in Sources */,
+				8000882C43C1A7CC1DE2E3A7 /* NudgeEngine.swift in Sources */,
+				D477F76133F4F12EF70C87BA /* OnboardingBodyView.swift in Sources */,
+				6BD841B514DE4AABAEDA3773 /* OnboardingCreateAccountView.swift in Sources */,
+				C32373CE8E8A1C91CBB1955D /* OnboardingFlowView.swift in Sources */,
+				A7B2FC999B13644600B6E78A /* OnboardingNumbersView.swift in Sources */,
+				E970DC4E918F28A3F53274A9 /* OnboardingProtocolView.swift in Sources */,
+				892124118AD69972FB39F762 /* OnboardingTrialView.swift in Sources */,
+				5F91630A4E042D1D5239A6A0 /* OpenFoodFactsService.swift in Sources */,
+				B68C3E70C523CDCDE23EDDFB /* PaywallView.swift in Sources */,
+				0C1D77D43F4A0920459F42CB /* PepperContextBuilder.swift in Sources */,
+				932AB36FD0950BD7DDA83F04 /* PepperModels.swift in Sources */,
+				0C8A239A8443142568C3E911 /* PepperService.swift in Sources */,
+				AF825FC006426E88FCAFFE47 /* PeptideApp.swift in Sources */,
+				7F0AF604F49071432B1A0D87 /* PrivacyPolicyView.swift in Sources */,
+				D3D6EAB137698AEC56A96F81 /* ProtocolTabView.swift in Sources */,
+				54AB0800CFDB72E621879B4D /* PurchasesManager.swift in Sources */,
+				A82EC9F4D8EEFFA3D2919545 /* ResearchListView.swift in Sources */,
+				F1F465BEEF7BF4E117DA70B7 /* SettingsView.swift in Sources */,
+				C80E7009798DA54693B9C8FC /* SideEffectSheet.swift in Sources */,
+				C2542417C91B2DC45C51215F /* SplashView.swift in Sources */,
+				F94374DCCDC4CE7A4F271880 /* SupabaseClient.swift in Sources */,
+				DB11EA057504EBA160F95C55 /* SwiftDataModels.swift in Sources */,
+				3B10F0E05CF40FFC9684D6F8 /* SyncService.swift in Sources */,
+				94E563CCA405EBAD146DC369 /* TodayView.swift in Sources */,
+				27581A45ECFCBC818FBDEAEA /* TrackTabView.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		038FB97808E825FDEB708363 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				INFOPLIST_FILE = Supporting/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		31E62110B2322732000614E4 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				INFOPLIST_FILE = Supporting/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		394DEFBB905690069F45F343 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_FILE = Supporting/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.peptideapp.app;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 6.0;
+				TARGETED_DEVICE_FAMILY = 1;
+				UIRequiresFullScreen = YES;
+			};
+			name = Debug;
+		};
+		48E29FE693B4811505754824 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_FILE = Supporting/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.peptideapp.app;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 6.0;
+				TARGETED_DEVICE_FAMILY = 1;
+				UIRequiresFullScreen = YES;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		987784B9CA352B80914746D9 /* Build configuration list for PBXProject "Peptide" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				394DEFBB905690069F45F343 /* Debug */,
+				48E29FE693B4811505754824 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		AF3AE4673E76996144620021 /* Build configuration list for PBXNativeTarget "Peptide" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				31E62110B2322732000614E4 /* Debug */,
+				038FB97808E825FDEB708363 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		382B3CD654373BC578BEBF60 /* XCRemoteSwiftPackageReference "lottie-ios" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/airbnb/lottie-ios.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 4.0.0;
+			};
+		};
+		658BDC87391E7B0EE42DD68D /* XCRemoteSwiftPackageReference "purchases-ios-spm" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/RevenueCat/purchases-ios-spm.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.0.0;
+			};
+		};
+		77DCAF9ECCDA4857709E490D /* XCRemoteSwiftPackageReference "posthog-ios" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/PostHog/posthog-ios.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 3.0.0;
+			};
+		};
+		CDCE47361573688F5CAD715D /* XCRemoteSwiftPackageReference "supabase-swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/supabase/supabase-swift";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		3747C358D2AD7863132D77FB /* RevenueCat */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 658BDC87391E7B0EE42DD68D /* XCRemoteSwiftPackageReference "purchases-ios-spm" */;
+			productName = RevenueCat;
+		};
+		4259C646A81323FD332495F9 /* Lottie */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 382B3CD654373BC578BEBF60 /* XCRemoteSwiftPackageReference "lottie-ios" */;
+			productName = Lottie;
+		};
+		5540A5A0FF78422BA495CF3E /* RevenueCatUI */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 658BDC87391E7B0EE42DD68D /* XCRemoteSwiftPackageReference "purchases-ios-spm" */;
+			productName = RevenueCatUI;
+		};
+		6101776D06AFE01551CD1B66 /* Supabase */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CDCE47361573688F5CAD715D /* XCRemoteSwiftPackageReference "supabase-swift" */;
+			productName = Supabase;
+		};
+		A417C4F2E3ECF95B02E08DCB /* PostHog */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 77DCAF9ECCDA4857709E490D /* XCRemoteSwiftPackageReference "posthog-ios" */;
+			productName = PostHog;
+		};
+/* End XCSwiftPackageProductDependency section */
+	};
+	rootObject = 1A354FEE4113C1C899E9AE8C /* Project object */;
+}
