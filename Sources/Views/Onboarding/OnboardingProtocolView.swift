@@ -92,22 +92,22 @@ struct ProtocolOptionCard: View {
                 HStack {
                     Text(title)
                         .font(.system(size: 14, weight: .bold))
-                        .foregroundColor(selected ? Color.appAccent : Color.appTextPrimary)
+                        .foregroundColor(selected ? .white : Color.appTextPrimary)
                     Spacer()
                     if selected {
                         Image(systemName: "checkmark.circle.fill")
-                            .foregroundColor(Color.appAccent)
+                            .foregroundColor(.white)
                             .font(.system(size: 16))
                     }
                 }
                 Text(subtitle)
                     .font(.system(size: 12))
-                    .foregroundColor(Color.appTextTertiary)
+                    .foregroundColor(selected ? Color.white.opacity(0.85) : Color.appTextTertiary)
                     .multilineTextAlignment(.leading)
             }
             .frame(maxWidth: .infinity, alignment: .leading)
             .padding(16)
-            .background(selected ? Color.appAccentTint : Color.white)
+            .background(selected ? Color.appAccent : Color.white)
             .cornerRadius(14)
             .overlay(
                 RoundedRectangle(cornerRadius: 14)

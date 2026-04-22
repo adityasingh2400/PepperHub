@@ -22,6 +22,10 @@
 	<string>1</string>
 	<key>NSCameraUsageDescription</key>
 	<string>Used to scan food barcodes</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Used so you can say compound names instead of typing them.</string>
+	<key>NSSpeechRecognitionUsageDescription</key>
+	<string>Used to recognize compound names you speak so they get auto-selected.</string>
 	<key>UILaunchScreen</key>
 	<dict/>
 	<key>UIRequiresFullScreen</key>

@@ -223,10 +223,10 @@ struct PillButton: View {
         Button(action: action) {
             Text(label)
                 .font(.system(size: 14, weight: selected ? .bold : .regular))
-                .foregroundColor(selected ? Color.appAccent : Color.appTextSecondary)
+                .foregroundColor(selected ? .white : Color.appTextSecondary)
                 .padding(.horizontal, 16)
                 .padding(.vertical, 10)
-                .background(selected ? Color.appAccentTint : Color.white)
+                .background(selected ? Color.appAccent : Color.white)
                 .cornerRadius(10)
                 .overlay(
                     RoundedRectangle(cornerRadius: 10)
@@ -248,15 +248,15 @@ struct ActivityRow: View {
                 VStack(alignment: .leading, spacing: 2) {
                     Text(title)
                         .font(.system(size: 14, weight: .semibold))
-                        .foregroundColor(Color.appTextPrimary)
+                        .foregroundColor(selected ? .white : Color.appTextPrimary)
                     Text(subtitle)
                         .font(.system(size: 12))
-                        .foregroundColor(Color.appTextTertiary)
+                        .foregroundColor(selected ? Color.white.opacity(0.85) : Color.appTextTertiary)
                 }
                 Spacer()
                 if selected {
                     Image(systemName: "checkmark.circle.fill")
-                        .foregroundColor(Color.appAccent)
+                        .foregroundColor(.white)
                         .font(.system(size: 18))
                 } else {
                     Circle()
@@ -265,7 +265,7 @@ struct ActivityRow: View {
                 }
             }
             .padding(14)
-            .background(selected ? Color.appAccentTint : Color.white)
+            .background(selected ? Color.appAccent : Color.white)
             .cornerRadius(12)
             .overlay(
                 RoundedRectangle(cornerRadius: 12)
@@ -286,16 +286,16 @@ struct GoalCard: View {
             VStack(spacing: 4) {
                 Text(title)
                     .font(.system(size: 14, weight: .bold))
-                    .foregroundColor(selected ? Color.appAccent : Color.appTextPrimary)
+                    .foregroundColor(selected ? .white : Color.appTextPrimary)
                 Text(subtitle)
                     .font(.system(size: 11))
-                    .foregroundColor(Color.appTextTertiary)
+                    .foregroundColor(selected ? Color.white.opacity(0.85) : Color.appTextTertiary)
                     .multilineTextAlignment(.center)
             }
             .frame(maxWidth: .infinity)
             .padding(.vertical, 14)
             .padding(.horizontal, 8)
-            .background(selected ? Color.appAccentTint : Color.white)
+            .background(selected ? Color.appAccent : Color.white)
             .cornerRadius(12)
             .overlay(
                 RoundedRectangle(cornerRadius: 12)

@@ -34,6 +34,8 @@ targets:
           - UIInterfaceOrientationPortrait
         UIRequiresFullScreen: YES
         NSCameraUsageDescription: "Used to scan food barcodes"
+        NSMicrophoneUsageDescription: "Used so you can say compound names instead of typing them."
+        NSSpeechRecognitionUsageDescription: "Used to recognize compound names you speak so they get auto-selected."
         CFBundleDisplayName: "Pepper"
     dependencies:
       - package: Supabase

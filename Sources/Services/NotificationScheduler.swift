@@ -35,6 +35,9 @@ final class NotificationScheduler {
 
     // Schedule dose reminders for the next N days based on active protocol.
     // Removes all previous peptide reminders first.
+    // Marked @MainActor because LocalProtocolCompound is a SwiftData @Model bound
+    // to the main-actor-isolated ModelContext that owns it.
+    @MainActor
     static func reschedule(compounds: [LocalProtocolCompound], timezone: TimeZone) async {
         let center = UNUserNotificationCenter.current()
 

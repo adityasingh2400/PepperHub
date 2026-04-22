@@ -450,29 +450,29 @@ private struct SelectionCard: View {
             if let icon {
                 Image(systemName: icon)
                     .font(.system(size: 18))
-                    .foregroundColor(isSelected ? Color.appAccent : Color.appTextTertiary)
+                    .foregroundColor(isSelected ? .white : Color.appTextTertiary)
                     .frame(width: 26)
             }
             VStack(alignment: .leading, spacing: 2) {
                 Text(title)
                     .font(.system(size: 16, weight: .semibold))
-                    .foregroundColor(Color.appTextPrimary)
+                    .foregroundColor(isSelected ? .white : Color.appTextPrimary)
                 if let subtitle {
                     Text(subtitle)
                         .font(.system(size: 13))
-                        .foregroundColor(Color.appTextTertiary)
+                        .foregroundColor(isSelected ? Color.white.opacity(0.85) : Color.appTextTertiary)
                 }
             }
             Spacer()
             if isSelected {
                 Image(systemName: "checkmark.circle.fill")
                     .font(.system(size: 20))
-                    .foregroundColor(Color.appAccent)
+                    .foregroundColor(.white)
             }
         }
         .padding(.horizontal, 18)
         .padding(.vertical, 16)
-        .background(isSelected ? Color.appAccentTint : Color.white)
+        .background(isSelected ? Color.appAccent : Color.white)
         .cornerRadius(16)
         .overlay(
             RoundedRectangle(cornerRadius: 16)
@@ -525,20 +525,20 @@ private struct Step1GoalView: View {
                         VStack(spacing: 10) {
                             Image(systemName: g.icon)
                                 .font(.system(size: 26))
-                                .foregroundColor(vm.goal == g ? Color.appAccent : Color.appTextTertiary)
+                                .foregroundColor(vm.goal == g ? .white : Color.appTextTertiary)
                             Text(g.rawValue)
                                 .font(.system(size: 15, weight: .semibold))
-                                .foregroundColor(Color.appTextPrimary)
+                                .foregroundColor(vm.goal == g ? .white : Color.appTextPrimary)
                             Text(g.subtitle)
                                 .font(.system(size: 12))
-                                .foregroundColor(Color.appTextTertiary)
+                                .foregroundColor(vm.goal == g ? Color.white.opacity(0.85) : Color.appTextTertiary)
                                 .multilineTextAlignment(.center)
                                 .lineLimit(2)
                         }
                         .frame(maxWidth: .infinity)
                         .padding(.vertical, 20)
                         .padding(.horizontal, 12)
-                        .background(vm.goal == g ? Color.appAccentTint : Color.white)
+                        .background(vm.goal == g ? Color.appAccent : Color.white)
                         .cornerRadius(16)
                         .overlay(
                             RoundedRectangle(cornerRadius: 16)
@@ -996,44 +996,9 @@ private struct Step10ProtocolView: View {
     private var compoundPicker: some View {
         VStack(spacing: 0) {
             QuestionHeader(question: "Which compounds?",
-                           subtitle: "Select all you're currently taking.")
+                           subtitle: "Tap the mic and say them, or pick below.")
 
-            ScrollView(showsIndicators: false) {
-                VStack(spacing: 10) {
-                    ForEach(OnboardingViewModel.commonCompounds, id: \.self) { compound in
-                        let selected = vm.selectedCompounds.contains(compound)
-                        Button {
-                            if selected {
-                                vm.selectedCompounds.remove(compound)
-                            } else {
-                                vm.selectedCompounds.insert(compound)
-                            }
-                        } label: {
-                            HStack(spacing: 14) {
-                                Text(compound)
-                                    .font(.system(size: 15, weight: .semibold))
-                                    .foregroundColor(Color.appTextPrimary)
-                                Spacer()
-                                Image(systemName: selected ? "checkmark.circle.fill" : "circle")
-                                    .font(.system(size: 20))
-                                    .foregroundColor(selected ? Color.appAccent : Color(hex: "d1d5db"))
-                            }
-                            .padding(.horizontal, 18)
-                            .padding(.vertical, 14)
-                            .background(selected ? Color.appAccentTint : Color.white)
-                            .cornerRadius(14)
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 14)
-                                    .stroke(selected ? Color.appAccent : Color.appBorder,
-                                            lineWidth: selected ? 2 : 1.5)
-                            )
-                        }
-                    }
-                }
-                .padding(.horizontal, 24)
-                .padding(.vertical, 8)
-                .padding(.bottom, 16)
-            }
+            CompoundPickerView(selected: $vm.selectedCompounds)
         }
         .safeAreaInset(edge: .bottom) {
             ContinueButton {

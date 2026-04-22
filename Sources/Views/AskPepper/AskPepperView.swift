@@ -432,6 +432,8 @@ private struct AssistantMessageBubble: View {
     let onConfirm: (PepperToolCall) -> Void
     let onCancel: (PepperToolCall) -> Void
 
+    @ObservedObject private var tts = ElevenLabsTTSService.shared
+
     var body: some View {
         HStack(alignment: .top, spacing: 8) {
             // Pepper avatar
@@ -454,6 +456,8 @@ private struct AssistantMessageBubble: View {
                         .background(Color.appCard)
                         .cornerRadius(18, corners: [.topLeft, .topRight, .bottomRight])
                         .shadow(color: .black.opacity(0.04), radius: 2, x: 0, y: 1)
+
+                    speakerButton
                 }
 
                 if let toolCall = message.toolCall {
@@ -467,6 +471,35 @@ private struct AssistantMessageBubble: View {
             }
             Spacer(minLength: 40)
         }
+    }
+
+    private var speakerButton: some View {
+        let isPlaying = tts.playingId == message.id
+        let isLoading = tts.loadingId == message.id
+        return Button {
+            tts.toggle(message.text, id: message.id)
+        } label: {
+            HStack(spacing: 4) {
+                if isLoading {
+                    ProgressView()
+                        .scaleEffect(0.6)
+                        .tint(Color.appAccent)
+                        .frame(width: 14, height: 14)
+                } else {
+                    Image(systemName: isPlaying ? "stop.fill" : "speaker.wave.2.fill")
+                        .font(.system(size: 11, weight: .semibold))
+                }
+                Text(isPlaying ? "Stop" : (isLoading ? "Loading…" : "Listen"))
+                    .font(.system(size: 11, weight: .semibold))
+            }
+            .foregroundColor(isPlaying || isLoading ? .white : Color.appAccent)
+            .padding(.horizontal, 10)
+            .padding(.vertical, 5)
+            .background(isPlaying || isLoading ? Color.appAccent : Color.appAccentTint)
+            .cornerRadius(12)
+        }
+        .buttonStyle(.plain)
+        .padding(.leading, 4)
     }
 }
 
