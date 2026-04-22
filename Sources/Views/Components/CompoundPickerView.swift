@@ -52,6 +52,7 @@ struct CompoundPickerView: View {
 
     private var voiceCard: some View {
         Button {
+            if voice.state.errorMessage != nil { voice.clearError() }
             Task { await voice.start(contextualStrings: CompoundCatalog.speechVocabulary) }
         } label: {
             VStack(alignment: .leading, spacing: 14) {
@@ -60,11 +61,10 @@ struct CompoundPickerView: View {
                     VStack(alignment: .leading, spacing: 2) {
                         Text(headlineForVoice)
                             .font(.system(size: 16, weight: .bold))
-                            .foregroundColor(Color.appTextPrimary)
+                            .foregroundColor(voiceHasError ? Color(hex: "b91c1c") : Color.appTextPrimary)
                         Text(subtitleForVoice)
                             .font(.system(size: 13))
-                            .foregroundColor(Color.appTextTertiary)
-                            .lineLimit(2)
+                            .foregroundColor(voiceHasError ? Color(hex: "b91c1c").opacity(0.8) : Color.appTextTertiary)
                             .fixedSize(horizontal: false, vertical: true)
                     }
                     Spacer(minLength: 0)
@@ -87,11 +87,19 @@ struct CompoundPickerView: View {
             .cornerRadius(18)
             .overlay(
                 RoundedRectangle(cornerRadius: 18)
-                    .stroke(voice.isListening ? Color.appAccent : Color.appBorder,
-                            lineWidth: voice.isListening ? 2 : 1.5)
+                    .stroke(voiceCardStrokeColor,
+                            lineWidth: (voice.isListening || voiceHasError) ? 2 : 1.5)
             )
         }
         .buttonStyle(.plain)
+    }
+
+    private var voiceHasError: Bool { voice.state.errorMessage != nil }
+
+    private var voiceCardStrokeColor: Color {
+        if voiceHasError { return Color(hex: "b91c1c") }
+        if voice.isListening { return Color.appAccent }
+        return Color.appBorder
     }
 
     private var micButton: some View {
@@ -130,12 +138,12 @@ struct CompoundPickerView: View {
 
     private var headlineForVoice: String {
         switch voice.state {
-        case .listening:           return "Listening…"
+        case .listening:            return "Listening…"
         case .requestingPermission: return "Asking permission…"
-        case .denied(let m):       return m
-        case .unsupported(let m):  return m
-        case .error(let m):        return m
-        case .idle:                return "Tap to speak"
+        case .denied:               return "Voice blocked"
+        case .unsupported:          return "Voice unavailable"
+        case .error:                return "Voice didn't start"
+        case .idle:                 return "Tap to speak"
         }
     }
 
@@ -143,9 +151,7 @@ struct CompoundPickerView: View {
         if voice.isListening {
             return voice.transcript.isEmpty ? "Say a peptide name. Tap again when done." : " "
         }
-        if case .denied = voice.state {
-            return "Or pick from below."
-        }
+        if let msg = voice.state.errorMessage { return msg }
         return "Try “BPC-157, Tirzepatide, Ipamorelin.”"
     }
 
@@ -256,12 +262,16 @@ struct CompoundPickerView: View {
     }
 
     private func toggle(_ name: String) {
+        let wasSearching = !search.isEmpty
         withAnimation(.spring(response: 0.3, dampingFraction: 0.85)) {
             if selected.contains(name) {
                 _ = selected.remove(name)
             } else {
                 _ = selected.insert(name)
             }
+            // Clear the search field after picking a result so the next
+            // compound can be typed immediately.
+            if wasSearching { search = "" }
         }
     }
 }
