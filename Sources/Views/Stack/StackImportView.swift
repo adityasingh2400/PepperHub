@@ -1,5 +1,6 @@
 import SwiftUI
 import SwiftData
+import UIKit
 
 /// Entry hub when the user wants to add or replace their stack.
 ///
@@ -34,27 +35,27 @@ struct StackImportView: View {
 
                     optionCard(
                         title: "Import from notes",
-                        subtitle: "Paste your stack from Apple Notes or anywhere — we extract everything in one tap.",
-                        icon: "doc.on.clipboard.fill",
-                        accent: Color.appAccent,
-                        bestFor: "Best for: you already track your stack",
+                        subtitle: "Paste your stack — we'll auto-detect it.",
+                        iconStyle: .notes,
+                        accent: Color(hex: "f59e0b"),       // warm Notes yellow
+                        bestFor: "Best for: you already wrote it down",
                         action: { presentedSheet = .notes }
                     )
 
                     optionCard(
                         title: "Voice import",
-                        subtitle: "Hold your vials, tap the mic, read the labels. We pick out names, doses, and frequency live.",
-                        icon: "mic.fill",
-                        accent: Color(hex: "0f766e"),
-                        bestFor: "Best for: you have vials but no list",
+                        subtitle: "Tap the mic. Read your labels.",
+                        iconStyle: .symbol("mic.fill"),
+                        accent: Color(hex: "c2410c"),       // rust / burnt orange
+                        bestFor: "Best for: you have vials in hand",
                         action: { presentedSheet = .voice }
                     )
 
                     optionCard(
                         title: "Plan a stack",
-                        subtitle: "Tell us what you want from peptides. We design a starter stack from the catalog with rationale.",
-                        icon: "sparkles",
-                        accent: Color(hex: "7c3aed"),
+                        subtitle: "Tell us your goals. We'll design one for you.",
+                        iconStyle: .symbol("sparkles"),
+                        accent: Color(hex: "166534"),       // pine / growth green
                         bestFor: "Best for: starting from scratch",
                         action: { presentedSheet = .plan }
                     )
@@ -103,25 +104,26 @@ struct StackImportView: View {
         }
     }
 
+    /// Icon options for the option card. `notes` paints a tiny mock of the
+    /// Apple Notes app icon (cream/yellow paper with horizontal lines) so the
+    /// "Import from notes" option *looks* like Notes, not just a coloured tile.
+    enum IconStyle {
+        case symbol(String)
+        case notes
+    }
+
     private func optionCard(
         title: String,
         subtitle: String,
-        icon: String,
+        iconStyle: IconStyle,
         accent: Color,
         bestFor: String,
         action: @escaping () -> Void
     ) -> some View {
         Button(action: action) {
             HStack(alignment: .top, spacing: 14) {
-                ZStack {
-                    RoundedRectangle(cornerRadius: 14, style: .continuous)
-                        .fill(accent)
-                        .frame(width: 52, height: 52)
-                        .shadow(color: accent.opacity(0.35), radius: 10, y: 4)
-                    Image(systemName: icon)
-                        .font(.system(size: 22, weight: .bold))
-                        .foregroundColor(.white)
-                }
+                iconTile(style: iconStyle, accent: accent)
+
                 VStack(alignment: .leading, spacing: 6) {
                     Text(title)
                         .font(.system(size: 16, weight: .bold))
@@ -152,5 +154,69 @@ struct StackImportView: View {
             .shadow(color: .black.opacity(0.04), radius: 6, y: 2)
         }
         .buttonStyle(.plain)
+    }
+
+    @ViewBuilder
+    private func iconTile(style: IconStyle, accent: Color) -> some View {
+        switch style {
+        case .symbol(let name):
+            ZStack {
+                RoundedRectangle(cornerRadius: 14, style: .continuous)
+                    .fill(accent)
+                    .frame(width: 52, height: 52)
+                    .shadow(color: accent.opacity(0.35), radius: 10, y: 4)
+                Image(systemName: name)
+                    .font(.system(size: 22, weight: .bold))
+                    .foregroundColor(.white)
+            }
+        case .notes:
+            // Mini "Notes paper" — yellow header strip + lined cream body.
+            // Hits the Apple Notes brand recognition without ripping the
+            // exact glyph (which would be a trademark issue).
+            ZStack(alignment: .top) {
+                RoundedRectangle(cornerRadius: 14, style: .continuous)
+                    .fill(Color(hex: "fdfaf2"))
+                    .frame(width: 52, height: 52)
+                    .shadow(color: Color(hex: "f59e0b").opacity(0.35), radius: 10, y: 4)
+
+                // Yellow header strip (the iconic Notes signal)
+                RoundedCornerShape(corners: [.topLeft, .topRight], radius: 14)
+                    .fill(accent)
+                    .frame(width: 52, height: 12)
+
+                // Lined body
+                VStack(spacing: 4) {
+                    Spacer().frame(height: 16)
+                    ForEach(0..<3, id: \.self) { i in
+                        Rectangle()
+                            .fill(Color(hex: "9ca3af").opacity(0.55))
+                            .frame(width: i == 2 ? 24 : 34, height: 1.5)
+                    }
+                    Spacer()
+                }
+                .frame(width: 52, height: 52)
+            }
+            .frame(width: 52, height: 52)
+            .overlay(
+                RoundedRectangle(cornerRadius: 14, style: .continuous)
+                    .stroke(Color(hex: "f59e0b").opacity(0.35), lineWidth: 0.5)
+            )
+        }
+    }
+}
+
+/// Per-corner rounded rectangle so we can round just the top of the Notes
+/// "yellow strip" without rounding its bottom edge.
+private struct RoundedCornerShape: Shape {
+    var corners: UIRectCorner
+    var radius: CGFloat
+
+    func path(in rect: CGRect) -> Path {
+        let path = UIBezierPath(
+            roundedRect: rect,
+            byRoundingCorners: corners,
+            cornerRadii: CGSize(width: radius, height: radius)
+        )
+        return Path(path.cgPath)
     }
 }

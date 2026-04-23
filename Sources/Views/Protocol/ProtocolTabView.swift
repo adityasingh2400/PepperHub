@@ -206,34 +206,75 @@ struct ProtocolTabView: View {
         }
     }
 
+    /// One single, hero CTA for the very first run. No card-around-a-button —
+    /// when the only thing on this screen is "make your first stack", the
+    /// button *is* the screen. Hits hard, then disappears forever.
     private var emptyProtocolState: some View {
-        VStack(spacing: 16) {
-            Image(systemName: "drop.circle")
-                .font(.system(size: 48))
-                .foregroundColor(Color.appBorder)
-            Text("Build your stack")
-                .font(.system(size: 18, weight: .bold))
-                .foregroundColor(Color.appTextPrimary)
-            Text("Add the peptides you're running to get dose reminders and unlock your Partition Plan.")
-                .font(.system(size: 14))
-                .foregroundColor(Color.appTextTertiary)
-                .multilineTextAlignment(.center)
-            Button(action: { showStackImport = true }) {
-                Text("Add my stack")
-                    .font(.system(size: 15, weight: .bold))
-                    .foregroundColor(.white)
-                    .padding(.horizontal, 28)
-                    .padding(.vertical, 12)
-                    .background(Color.appAccent)
-                    .cornerRadius(12)
+        Button(action: { showStackImport = true }) {
+            ZStack {
+                // Subtle radial bloom inside the gradient adds depth without
+                // looking like a generic Tailwind button.
+                RoundedRectangle(cornerRadius: 28, style: .continuous)
+                    .fill(
+                        LinearGradient(
+                            colors: [
+                                Color.appAccent,
+                                Color.appAccent.opacity(0.88),
+                                Color(hex: "7f1d3a")
+                            ],
+                            startPoint: .topLeading,
+                            endPoint: .bottomTrailing
+                        )
+                    )
+                RoundedRectangle(cornerRadius: 28, style: .continuous)
+                    .fill(
+                        RadialGradient(
+                            colors: [Color.white.opacity(0.18), .clear],
+                            center: .topTrailing,
+                            startRadius: 10,
+                            endRadius: 220
+                        )
+                    )
+
+                VStack(alignment: .leading, spacing: 16) {
+                    Image(systemName: "sparkles")
+                        .font(.system(size: 22, weight: .bold))
+                        .foregroundColor(.white)
+                        .padding(10)
+                        .background(
+                            Circle().fill(Color.white.opacity(0.18))
+                        )
+
+                    VStack(alignment: .leading, spacing: 6) {
+                        Text("Build your stack")
+                            .font(.system(size: 30, weight: .black))
+                            .foregroundColor(.white)
+                        Text("Import from notes, voice, or have us design one for you.")
+                            .font(.system(size: 14, weight: .medium))
+                            .foregroundColor(.white.opacity(0.85))
+                            .multilineTextAlignment(.leading)
+                            .fixedSize(horizontal: false, vertical: true)
+                    }
+
+                    HStack(spacing: 6) {
+                        Text("Get started")
+                            .font(.system(size: 14, weight: .bold, design: .rounded))
+                        Image(systemName: "arrow.right")
+                            .font(.system(size: 12, weight: .black))
+                    }
+                    .foregroundColor(Color.appAccent)
+                    .padding(.horizontal, 14)
+                    .padding(.vertical, 9)
+                    .background(Capsule().fill(Color.white))
+                    .padding(.top, 4)
+                }
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .padding(24)
             }
+            .frame(minHeight: 220)
+            .shadow(color: Color.appAccent.opacity(0.35), radius: 18, x: 0, y: 8)
         }
-        .padding(.vertical, 40)
-        .padding(.horizontal, 24)
-        .frame(maxWidth: .infinity)
-        .background(Color.appCard)
-        .cornerRadius(20)
-        .overlay(RoundedRectangle(cornerRadius: 20).stroke(Color.appBorder, lineWidth: 1))
+        .buttonStyle(.plain)
     }
 }
 
