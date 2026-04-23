@@ -4,26 +4,25 @@ import UIKit
 
 /// Entry hub when the user wants to add or replace their stack.
 ///
-/// Three big choices, each beautifully contrasted so the right path for each
-/// user is obvious at a glance:
+/// Two paths, both universal:
+///   1. **Import from notes** — paste a list, we auto-detect.
+///   2. **Voice import** — say what you have *or* what you want. The voice
+///      flow is dual-mode: if you mention compounds, we parse them; if you
+///      mention goals, we recommend a stack from the catalog.
 ///
-///   1. "Import from notes"  — for people who already track their stack in Notes.
-///   2. "Voice import"       — for people whose stack only lives in their head
-///                              or on the labels of their vials.
-///   3. "Plan a stack"       — for people building from scratch.
-///
-/// All three converge on `StackPreviewSheet` for the final review.
+/// We deliberately *don't* surface a third "Plan a stack" path because the
+/// voice flow already covers it — fewer options, more intelligence.
 struct StackImportView: View {
     @Environment(\.dismiss) private var dismiss
 
-    /// Pre-collected goals from onboarding (if any). Plumbed through to the
-    /// "Plan a stack" flow so we don't ask the user the same thing twice.
+    /// Reserved for future onboarding handoffs. Currently unused since the
+    /// voice flow detects goals from speech directly.
     var prefilledGoals: Set<String> = []
 
     @State private var presentedSheet: ImportSheet?
 
     enum ImportSheet: String, Identifiable {
-        case notes, voice, plan
+        case notes, voice
         var id: String { rawValue }
     }
 
@@ -34,33 +33,24 @@ struct StackImportView: View {
                     header
 
                     optionCard(
-                        title: "Import from notes",
-                        subtitle: "Paste your stack — we'll auto-detect it.",
-                        iconStyle: .notes,
-                        accent: Color(hex: "f59e0b"),       // warm Notes yellow
-                        bestFor: "Best for: you already wrote it down",
-                        action: { presentedSheet = .notes }
-                    )
-
-                    optionCard(
-                        title: "Voice import",
-                        subtitle: "Tap the mic. Read your labels.",
+                        title: "Voice",
+                        subtitle: "Talk about what you have **or** what you want — we'll figure out the rest.",
                         iconStyle: .symbol("mic.fill"),
                         accent: Color(hex: "c2410c"),       // rust / burnt orange
-                        bestFor: "Best for: you have vials in hand",
+                        bestFor: "Most flexible · the smart default",
                         action: { presentedSheet = .voice }
                     )
 
                     optionCard(
-                        title: "Plan a stack",
-                        subtitle: "Tell us your goals. We'll design one for you.",
-                        iconStyle: .symbol("sparkles"),
-                        accent: Color(hex: "166534"),       // pine / growth green
-                        bestFor: "Best for: starting from scratch",
-                        action: { presentedSheet = .plan }
+                        title: "Notes",
+                        subtitle: "Paste your stack from Notes or anywhere — we'll auto-detect it.",
+                        iconStyle: .notes,
+                        accent: Color(hex: "f59e0b"),       // warm Notes yellow
+                        bestFor: "Best if you already wrote it down",
+                        action: { presentedSheet = .notes }
                     )
 
-                    Text("All three paths land on a confirm screen — nothing saves until you tap **Use this stack**.")
+                    Text("Both paths land on a confirm screen — nothing saves until you tap **Use this stack**.")
                         .font(.system(size: 11))
                         .foregroundColor(Color.appTextMeta)
                         .multilineTextAlignment(.center)
@@ -78,16 +68,12 @@ struct StackImportView: View {
                 }
             }
             .sheet(item: $presentedSheet, onDismiss: {
-                // If a downstream sheet (preview) saved the stack, dismiss
+                // If the downstream preview sheet saved the stack, dismiss
                 // this hub too so the user lands on the new Stack view.
             }) { sheet in
                 switch sheet {
-                case .notes:
-                    NotesImportView()
-                case .voice:
-                    VoiceImportView()
-                case .plan:
-                    PlanStackView(prefilledGoals: prefilledGoals)
+                case .notes: NotesImportView()
+                case .voice: VoiceImportView()
                 }
             }
         }
