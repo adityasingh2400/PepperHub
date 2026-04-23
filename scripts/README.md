@@ -1,5 +1,7 @@
 # Pepper data + seed scripts
 
+← Back to the main project: **[README.md](../README.md)**
+
 One-shot scripts for populating the Pepper Supabase project.
 
 ## Prereqs
