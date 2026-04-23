@@ -26,36 +26,111 @@ struct CompoundCatalog {
 
     static let all: [Entry] = [
         // Healing & recovery
-        .init(canonical: "BPC-157",          category: .healing, aliases: ["bpc", "b p c", "bpc 157", "bpc157"]),
-        .init(canonical: "TB-500",           category: .healing, aliases: ["tb", "tb 500", "tb500", "thymosin beta"]),
-        .init(canonical: "GHK-Cu",           category: .healing, aliases: ["ghk", "g h k", "ghk copper", "copper peptide"]),
-        .init(canonical: "Thymosin Alpha-1", category: .healing, aliases: ["thymosin alpha", "thymosin", "ta1"]),
+        .init(canonical: "BPC-157",          category: .healing, aliases: [
+            "bpc", "b p c", "bpc 157", "bpc157", "bpc one fifty seven",
+            "bpc 1 5 7", "b p c 157",
+            // STT mishearings
+            "vpc", "vpc 157", "bpc one five seven"
+        ]),
+        .init(canonical: "TB-500",           category: .healing, aliases: [
+            "tb", "tb 500", "tb500", "thymosin beta", "thymosin beta 4", "tb four",
+            "t b 500", "t b five hundred",
+            // STT mishearings
+            "tv 500", "tb five hundred"
+        ]),
+        .init(canonical: "GHK-Cu",           category: .healing, aliases: [
+            "ghk", "g h k", "ghk copper", "copper peptide",
+            "ghkcu", "ghk cu", "g h k cu", "g h k c u", "ghk c u", "ghk-cu",
+            "ghk see you", "ghk copper peptide",
+            // STT mishearings
+            "g h kcu", "geek copper"
+        ]),
+        .init(canonical: "Thymosin Alpha-1", category: .healing, aliases: [
+            "thymosin alpha", "thymosin", "ta1", "ta 1", "t a 1",
+            "thymosin alpha one", "thymalpha"
+        ]),
 
         // GH secretagogues
-        .init(canonical: "Ipamorelin",       category: .ghSecretagogue, aliases: ["ipa", "ipamorelan"]),
-        .init(canonical: "CJC-1295",         category: .ghSecretagogue, aliases: ["cjc", "c j c", "cjc 1295", "cjc1295"]),
-        .init(canonical: "Sermorelin",       category: .ghSecretagogue, aliases: ["sermorlin"]),
-        .init(canonical: "Tesamorelin",      category: .ghSecretagogue, aliases: ["tesa", "tesamorelan"]),
-        .init(canonical: "GHRP-2",           category: .ghSecretagogue, aliases: ["ghrp 2", "ghrp two", "ghrp2"]),
-        .init(canonical: "GHRP-6",           category: .ghSecretagogue, aliases: ["ghrp 6", "ghrp six", "ghrp6"]),
-        .init(canonical: "Hexarelin",        category: .ghSecretagogue, aliases: ["hex"]),
-        .init(canonical: "MK-677",           category: .ghSecretagogue, aliases: ["mk", "m k", "mk 677", "ibutamoren"]),
+        .init(canonical: "Ipamorelin",       category: .ghSecretagogue, aliases: [
+            "ipa", "ipamorelan", "ipamorelan",
+            "ipa morelin", "ipa merlin",      // STT loves this one
+            "epimorelin", "ipamoreline"
+        ]),
+        .init(canonical: "CJC-1295",         category: .ghSecretagogue, aliases: [
+            "cjc", "c j c", "cjc 1295", "cjc1295", "cjc twelve ninety five",
+            "c j c 1295", "cjc no dac", "cjc with dac", "cjc dac", "cjc-1295",
+            // STT mishearings
+            "see jc", "cj c"
+        ]),
+        .init(canonical: "Sermorelin",       category: .ghSecretagogue, aliases: [
+            "sermorlin", "sermoreline", "ser morelin", "ceremonalin"
+        ]),
+        .init(canonical: "Tesamorelin",      category: .ghSecretagogue, aliases: [
+            "tesa", "tesamorelan", "tesamoreline", "tesa morelin", "egrifta"
+        ]),
+        .init(canonical: "GHRP-2",           category: .ghSecretagogue, aliases: [
+            "ghrp 2", "ghrp two", "ghrp2", "g h r p 2", "g h r p two"
+        ]),
+        .init(canonical: "GHRP-6",           category: .ghSecretagogue, aliases: [
+            "ghrp 6", "ghrp six", "ghrp6", "g h r p 6", "g h r p six"
+        ]),
+        .init(canonical: "Hexarelin",        category: .ghSecretagogue, aliases: [
+            "hex", "hex a relin", "hexarelan"
+        ]),
+        .init(canonical: "MK-677",           category: .ghSecretagogue, aliases: [
+            "mk", "m k", "mk 677", "ibutamoren", "mk677", "mk six seventy seven",
+            "m k six seventy seven", "ibutamorin"
+        ]),
 
         // Metabolic / fat loss
-        .init(canonical: "Tirzepatide",      category: .fatLoss, aliases: ["tirz", "mounjaro", "zepbound"]),
-        .init(canonical: "Semaglutide",      category: .fatLoss, aliases: ["sema", "ozempic", "wegovy", "rybelsus"]),
-        .init(canonical: "AOD-9604",         category: .fatLoss, aliases: ["aod", "a o d", "aod9604"]),
-        .init(canonical: "Retatrutide",      category: .fatLoss, aliases: ["reta"]),
+        .init(canonical: "Tirzepatide",      category: .fatLoss, aliases: [
+            "tirz", "mounjaro", "zepbound", "tirz a peptide",
+            "tier z a tide", "tears a peptide"   // STT mishearings of "tirzepatide"
+        ]),
+        .init(canonical: "Semaglutide",      category: .fatLoss, aliases: [
+            "sema", "ozempic", "wegovy", "rybelsus", "sema glue tide",
+            "sema glue tied", "summa glue tide"
+        ]),
+        .init(canonical: "AOD-9604",         category: .fatLoss, aliases: [
+            "aod", "a o d", "aod9604", "aod 9604", "a o d 9604",
+            "a o d ninety six oh four"
+        ]),
+        .init(canonical: "Retatrutide",      category: .fatLoss, aliases: [
+            "reta", "reta trutide", "retta trutide"
+        ]),
+
+        // Mitochondrial / longevity
+        .init(canonical: "MOTS-c",           category: .other, aliases: [
+            "mots c", "motsc", "mots", "mots see", "moats c", "moats see",
+            "mots-c", "m o t s c", "m o t s",
+            // STT loves to butcher this one — "Mazi" is what it heard for the
+            // user. Add the most plausible mishearings.
+            "mazi", "moats", "motsy", "motzi", "motsi", "moatsi"
+        ]),
 
         // Other / cognitive / sexual
-        .init(canonical: "PT-141",           category: .other, aliases: ["pt", "p t", "pt 141", "bremelanotide"]),
-        .init(canonical: "Melanotan II",     category: .other, aliases: ["melanotan", "mt2", "mt 2", "tan peptide"]),
-        .init(canonical: "Selank",           category: .other, aliases: []),
-        .init(canonical: "Semax",            category: .other, aliases: []),
-        .init(canonical: "Epithalon",        category: .other, aliases: ["epitalon"]),
-        .init(canonical: "DSIP",             category: .other, aliases: ["d s i p"]),
-        .init(canonical: "KPV",              category: .other, aliases: ["k p v"]),
-        .init(canonical: "LL-37",            category: .other, aliases: ["l l 37"]),
+        .init(canonical: "PT-141",           category: .other, aliases: [
+            "pt", "p t", "pt 141", "bremelanotide", "p t 141",
+            "pt one forty one", "pt141"
+        ]),
+        .init(canonical: "Melanotan II",     category: .other, aliases: [
+            "melanotan", "mt2", "mt 2", "tan peptide", "melanotan 2",
+            "melanotan two", "m t 2", "melanotan ii"
+        ]),
+        .init(canonical: "Selank",           category: .other, aliases: ["sea lank", "celink"]),
+        .init(canonical: "Semax",            category: .other, aliases: ["see max", "ceemax"]),
+        .init(canonical: "Epithalon",        category: .other, aliases: [
+            "epitalon", "epithalone", "epi talon", "epi th alon"
+        ]),
+        .init(canonical: "DSIP",             category: .other, aliases: [
+            "d s i p", "dee sip", "dsip peptide"
+        ]),
+        .init(canonical: "KPV",              category: .other, aliases: [
+            "k p v", "kay pee vee"
+        ]),
+        .init(canonical: "LL-37",            category: .other, aliases: [
+            "l l 37", "l l thirty seven", "ll37", "double l 37"
+        ]),
     ]
 
     static let popular: [String] = [
@@ -73,23 +148,152 @@ struct CompoundCatalog {
         return Array(v)
     }()
 
+    /// Best-effort compound match. Two passes:
+    ///   1. **Exact**: substring match against canonical names + aliases (with
+    ///      and without internal whitespace, so "ghkcu" hits "ghk cu").
+    ///   2. **Fuzzy**: sliding 1–3 word window over the transcript; for each
+    ///      window we Levenshtein-compare against catalog tokens. This catches
+    ///      STT mishearings like "Mazi" → MOTS-c, "ipa Merlin" → Ipamorelin,
+    ///      and run-together words like "GHKCU" → GHK-Cu.
     static func match(in text: String) -> [String] {
         let haystack = normalize(text)
         guard !haystack.isEmpty else { return [] }
-        var hits: [String] = []
+
+        var hits = Set<String>()
+
+        // ── Pass 1: exact substring (with both spaced + collapsed forms) ──
+        let collapsedHaystack = haystack.replacingOccurrences(of: " ", with: "")
         for entry in all {
             let candidates = [entry.canonical] + entry.aliases
-            for c in candidates {
+            outer: for c in candidates {
                 let needle = normalize(c)
                 guard !needle.isEmpty else { continue }
-                if haystack.range(of: "\\b\(NSRegularExpression.escapedPattern(for: needle))\\b",
-                                  options: .regularExpression) != nil {
-                    hits.append(entry.canonical)
-                    break
+                let escaped = NSRegularExpression.escapedPattern(for: needle)
+                if haystack.range(of: "\\b\(escaped)\\b", options: .regularExpression) != nil {
+                    hits.insert(entry.canonical); break outer
+                }
+                // Also try collapsed form so "g h k cu" can hit "ghkcu" and
+                // vice versa. Small word floor so single letters don't false
+                // positive ("a" or "i" against everything).
+                let collapsedNeedle = needle.replacingOccurrences(of: " ", with: "")
+                if collapsedNeedle.count >= 3,
+                   collapsedHaystack.range(of: collapsedNeedle) != nil {
+                    hits.insert(entry.canonical); break outer
                 }
             }
         }
-        return hits
+
+        // ── Pass 2: fuzzy windows (only for compounds we didn't already hit) ──
+        let words = haystack.split(separator: " ").map(String.init)
+        if !words.isEmpty {
+            for entry in all where !hits.contains(entry.canonical) {
+                if fuzzyHit(entry: entry, words: words) {
+                    hits.insert(entry.canonical)
+                }
+            }
+        }
+
+        return Array(hits)
+    }
+
+    /// True when any 1-, 2-, or 3-word window in the transcript is close
+    /// enough (under our distance threshold) to *any* alias or canonical
+    /// name for this entry.
+    ///
+    /// Conservative on purpose — most real mishearings are already handled
+    /// by aliases (we curated phonetic ones for each compound). Fuzzy here
+    /// is the safety net for **single-character typos** ("ipamorlin",
+    /// "sermoreline", "tirzepetide") and runs only when:
+    ///   - window is ≥5 chars (kills "tea" → "tesa" false positives)
+    ///   - target is ≥6 chars (no fuzzy on short aliases)
+    ///   - the first two characters match exactly (kills cross-compound
+    ///     pollution: Ipamorelin shares 7/10 chars with Sermorelin but they
+    ///     start "ip" vs "se", so no false positive)
+    private static func fuzzyHit(entry: Entry, words: [String]) -> Bool {
+        let candidates: [String] = ([entry.canonical] + entry.aliases).map { normalize($0) }
+        let primaryTargets = candidates
+            .map { $0.replacingOccurrences(of: " ", with: "") }
+            .filter { (6...14).contains($0.count) }
+        guard !primaryTargets.isEmpty else { return false }
+
+        for windowSize in 1...min(3, words.count) {
+            for start in 0...(words.count - windowSize) {
+                let window = words[start..<(start + windowSize)]
+                    .joined()
+                    .replacingOccurrences(of: " ", with: "")
+                guard (5...18).contains(window.count) else { continue }
+                for target in primaryTargets {
+                    if isFuzzyMatch(window, target) { return true }
+                }
+            }
+        }
+        return false
+    }
+
+    /// Treats `window` as a fuzzy match for `target` if all of:
+    ///   - their first two characters are identical (anchors the prefix —
+    ///     this single guard kills almost every cross-compound false hit)
+    ///   - lengths differ by ≤2
+    ///   - Levenshtein distance ≤ length-scaled threshold
+    ///   - shared character bag covers ≥70% of the shorter string
+    private static func isFuzzyMatch(_ window: String, _ target: String) -> Bool {
+        // Prefix anchor — strongest cheap signal.
+        guard window.prefix(2) == target.prefix(2) else { return false }
+
+        let lenDelta = abs(window.count - target.count)
+        guard lenDelta <= 2 else { return false }
+
+        let minLen = Swift.min(window.count, target.count)
+        let threshold: Int
+        switch minLen {
+        case 0...5:   threshold = 1
+        case 6...9:   threshold = 2
+        default:      threshold = 3
+        }
+
+        let dist = levenshtein(window, target)
+        guard dist <= threshold else { return false }
+
+        let overlap = sharedCharCount(window, target)
+        return Double(overlap) / Double(minLen) >= 0.7
+    }
+
+    /// Classic Levenshtein edit distance (insertions + deletions + subs).
+    /// Iterative two-row implementation — O(n×m) time, O(min(n,m)) space.
+    private static func levenshtein(_ a: String, _ b: String) -> Int {
+        if a.isEmpty { return b.count }
+        if b.isEmpty { return a.count }
+        let aChars = Array(a), bChars = Array(b)
+        var prev = Array(0...bChars.count)
+        var curr = [Int](repeating: 0, count: bChars.count + 1)
+        for i in 1...aChars.count {
+            curr[0] = i
+            for j in 1...bChars.count {
+                let cost = aChars[i - 1] == bChars[j - 1] ? 0 : 1
+                curr[j] = Swift.min(
+                    prev[j] + 1,         // deletion
+                    curr[j - 1] + 1,     // insertion
+                    prev[j - 1] + cost   // substitution
+                )
+            }
+            swap(&prev, &curr)
+        }
+        return prev[bChars.count]
+    }
+
+    /// Count of characters that appear in both strings (with multiplicity).
+    /// Used as a sanity guard so "I am pretty" doesn't fuzzy-match "Ipamorelin".
+    private static func sharedCharCount(_ a: String, _ b: String) -> Int {
+        var bag: [Character: Int] = [:]
+        for c in a { bag[c, default: 0] += 1 }
+        var shared = 0
+        for c in b {
+            if let count = bag[c], count > 0 {
+                shared += 1
+                bag[c] = count - 1
+            }
+        }
+        return shared
     }
 
     static func normalize(_ s: String) -> String {
@@ -617,6 +821,31 @@ extension CompoundCatalog {
             storageTemp: "refrigerated",
             storageMaxDays: 30,
             recommendedSiteIds: ["abdomen-subq-left"]
+        ),
+
+        Compound(
+            name: "MOTS-c",
+            slug: "mots-c",
+            halfLifeHrs: 4,
+            dosingRangeLowMcg: 5_000,
+            dosingRangeHighMcg: 10_000,
+            benefits: ["Mitochondrial function", "Insulin sensitivity", "Metabolic health", "Endurance"],
+            sideEffects: ["Generally well tolerated", "Mild injection-site irritation"],
+            stackingNotes: "Stacks well with NAD-precursors and longevity peptides.",
+            fdaStatus: .research,
+            summaryMd: "MOTS-c is a 16-amino-acid mitochondrial-derived peptide researched for metabolic regulation, insulin sensitivity, and exercise performance.",
+            goalCategories: ["longevity", "fat_loss", "growth"],
+            administrationRoutes: ["subq"],
+            timeToEffectHours: 4,
+            peakEffectHours: 12,
+            durationHours: 48,
+            dosingFormula: "clamp(weightKg * 75, 5000, 10000)",
+            dosingUnit: "mcg",
+            dosingFrequency: "3x_weekly",
+            bacWaterMlDefault: 2.0,
+            storageTemp: "refrigerated",
+            storageMaxDays: 30,
+            recommendedSiteIds: ["abdomen-subq-left", "abdomen-subq-right"]
         ),
 
         Compound(

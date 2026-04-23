@@ -110,4 +110,63 @@ final class StackParserTests: XCTestCase {
         XCTAssertEqual(bpc.doseMcg ?? 0, 250, accuracy: 0.01)
         XCTAssertEqual(bpc.frequency, "daily")
     }
+
+    // MARK: - Run-together + STT mishearing recovery
+
+    /// Real-world transcript that the user tested: "MOTS-c, GHK-Cu, and
+    /// CJC/Ipamorelin blend with no DAC". Apple's STT mangled MOTS-c to
+    /// "Mazi" and ran GHK-Cu together as "GHKCU". Both must still be picked
+    /// up via fuzzy + alias matching.
+    func test_run_together_aliases() {
+        // GHKCU should match GHK-Cu via collapsed alias
+        let names = CompoundCatalog.match(in: "I run GHKCU twice a week")
+        XCTAssertTrue(names.contains("GHK-Cu"), "should match collapsed GHKCU → GHK-Cu")
+    }
+
+    func test_mots_c_added_to_catalog() {
+        let names = CompoundCatalog.match(in: "I run mots-c daily")
+        XCTAssertTrue(names.contains("MOTS-c"))
+    }
+
+    func test_mots_c_via_stt_mishearing() {
+        // "Mazi" is what Apple STT heard for "MOTS-c" — fuzzy matcher should
+        // recover it.
+        let names = CompoundCatalog.match(in: "number one is mazi")
+        XCTAssertTrue(names.contains("MOTS-c"), "fuzzy should recover mazi → MOTS-c")
+    }
+
+    func test_ipa_merlin_recovers_to_ipamorelin() {
+        // STT heard "ipa Merlin" for "Ipamorelin". Already worked via "ipa"
+        // alias but lock it into the test suite so we don't regress.
+        let names = CompoundCatalog.match(in: "blend of cjc and ipa merlin")
+        XCTAssertTrue(names.contains("Ipamorelin"))
+        XCTAssertTrue(names.contains("CJC-1295"))
+    }
+
+    func test_full_real_world_voice_transcript() {
+        // The exact transcript from the user's test session.
+        let input = """
+        I want I currently do three peptides number one Mazi number two is \
+        GHKCU and number three is a blend of cjc an ipa Merlin with no DAC
+        """
+        let names = Set(CompoundCatalog.match(in: input))
+        XCTAssertTrue(names.contains("MOTS-c"),     "should recover MOTS-c from 'Mazi'")
+        XCTAssertTrue(names.contains("GHK-Cu"),     "should recover GHK-Cu from 'GHKCU'")
+        XCTAssertTrue(names.contains("CJC-1295"))
+        XCTAssertTrue(names.contains("Ipamorelin"), "should recover Ipamorelin from 'ipa Merlin'")
+    }
+
+    // MARK: - False-positive guards
+
+    func test_common_english_does_not_match_compounds() {
+        // "I am pretty" sounds remotely like "Ipamorelin" — must NOT match.
+        let names = CompoundCatalog.match(in: "I am pretty sure I want a workout")
+        XCTAssertFalse(names.contains("Ipamorelin"))
+    }
+
+    func test_short_words_dont_false_positive() {
+        // "tea" should not become TB-500.
+        let names = CompoundCatalog.match(in: "I had some tea this morning")
+        XCTAssertTrue(names.isEmpty, "should not pick up anything; got \(names)")
+    }
 }
