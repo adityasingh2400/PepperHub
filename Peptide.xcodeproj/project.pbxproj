@@ -168,7 +168,7 @@
 		E292BDD27FAC49022F969563 /* SyringeMath.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyringeMath.swift; sourceTree = "<group>"; };
 		E316347F2770670754F356D8 /* TrackTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackTabView.swift; sourceTree = "<group>"; };
 		F7ADA16AA8D67B19118727DC /* FlowLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlowLayout.swift; sourceTree = "<group>"; };
-		"TEMP_EF974379-60B6-4449-9581-D73FBD07F96F" /* signing.local.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = signing.local.xcconfig; sourceTree = "<group>"; };
+		"TEMP_F3ECD57A-0556-411B-921D-34AED016F902" /* signing.local.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = signing.local.xcconfig; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -434,10 +434,10 @@
 			path = Resources;
 			sourceTree = "<group>";
 		};
-		"TEMP_F7A360D3-DE31-4B5F-9C7C-A24320D414A9" /* Pepper */ = {
+		"TEMP_21E52061-464C-4A68-B98B-0A4B99B7795D" /* Pepper */ = {
 			isa = PBXGroup;
 			children = (
-				"TEMP_EF974379-60B6-4449-9581-D73FBD07F96F" /* signing.local.xcconfig */,
+				"TEMP_F3ECD57A-0556-411B-921D-34AED016F902" /* signing.local.xcconfig */,
 			);
 			path = Pepper;
 			sourceTree = "<group>";
@@ -670,7 +670,7 @@
 		};
 		394DEFBB905690069F45F343 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = "TEMP_EF974379-60B6-4449-9581-D73FBD07F96F" /* signing.local.xcconfig */;
+			baseConfigurationReference = "TEMP_F3ECD57A-0556-411B-921D-34AED016F902" /* signing.local.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
@@ -744,7 +744,7 @@
 		};
 		48E29FE693B4811505754824 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = "TEMP_EF974379-60B6-4449-9581-D73FBD07F96F" /* signing.local.xcconfig */;
+			baseConfigurationReference = "TEMP_F3ECD57A-0556-411B-921D-34AED016F902" /* signing.local.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
