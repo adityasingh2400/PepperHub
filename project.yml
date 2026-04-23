@@ -17,6 +17,12 @@ settings:
     TARGETED_DEVICE_FAMILY: "1"
     UIRequiresFullScreen: YES
     INFOPLIST_FILE: Supporting/Info.plist
+    # Auto-managed code signing. With a free personal team this gives you a
+    # 7-day device-installable build out of the box. Open
+    # Peptide.xcodeproj in Xcode → "Peptide" target → Signing & Capabilities,
+    # tick "Automatically manage signing", then pick your personal team.
+    CODE_SIGN_STYLE: Automatic
+    CODE_SIGN_IDENTITY: "Apple Development"
 
 targets:
   Peptide:

@@ -18,7 +18,8 @@ final class NavigationCoordinator: ObservableObject {
     enum Tab: Int, CaseIterable {
         case today = 0
         case food = 1
-        case `protocol` = 2
+        case `protocol` = 2  // Stays "protocol" internally for compat;
+                              // user-facing label is "Stack" (see `title`).
         case track = 3
         case research = 4
 
@@ -36,7 +37,7 @@ final class NavigationCoordinator: ObservableObject {
             switch self {
             case .today:    return "Today"
             case .food:     return "Food"
-            case .protocol: return "Protocol"
+            case .protocol: return "Stack"
             case .track:    return "Track"
             case .research: return "Research"
             }

@@ -92,6 +92,30 @@ struct OnboardingCreateAccountView: View {
                         .foregroundColor(Color.appTextMeta)
                         .multilineTextAlignment(.center)
                         .padding(.top, 4)
+
+                    #if DEBUG
+                    // Local-only bypass so we can iterate on the app without
+                    // round-tripping through Supabase auth on every reinstall.
+                    // Compiled out of release builds.
+                    Button {
+                        authManager.enableDebugPreviewMode()
+                    } label: {
+                        HStack(spacing: 6) {
+                            Image(systemName: "hammer.fill")
+                                .font(.system(size: 11, weight: .bold))
+                            Text("Skip auth (debug)")
+                                .font(.system(size: 12, weight: .bold))
+                        }
+                        .foregroundColor(Color.appTextTertiary)
+                        .padding(.vertical, 10)
+                        .padding(.horizontal, 16)
+                        .background(
+                            Capsule()
+                                .stroke(Color.appBorder, lineWidth: 1)
+                        )
+                    }
+                    .padding(.top, 12)
+                    #endif
                 }
                 .padding(.horizontal, 24)
             }

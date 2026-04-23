@@ -18,8 +18,8 @@ struct ProtocolTabView: View {
     @Query(sort: \LocalSideEffectLog.loggedAt, order: .reverse)
     private var sideEffects: [LocalSideEffectLog]
 
-    @State private var segment: ProtocolSegment = .protocol_
     @State private var showAddProtocol = false
+    @State private var showStackImport = false
     @State private var showLogDose = false
     @State private var selectedCompound: LocalProtocolCompound?
     @State private var showAddVial = false
@@ -27,36 +27,8 @@ struct ProtocolTabView: View {
     @State private var showLogSideEffect = false
     @State private var showSideEffectHistory = false
 
-    enum ProtocolSegment: String, CaseIterable {
-        case protocol_ = "Protocol"
-        case research  = "Research"
-    }
-
     var body: some View {
         NavigationStack {
-            VStack(spacing: 0) {
-                HStack(spacing: 6) {
-                    ForEach(ProtocolSegment.allCases, id: \.self) { seg in
-                        Button(action: { segment = seg }) {
-                            Text(seg.rawValue)
-                                .font(.system(size: 14, weight: .semibold))
-                                .foregroundColor(segment == seg ? Color.appAccent : Color.appTextMeta)
-                                .frame(maxWidth: .infinity)
-                                .padding(.vertical, 8)
-                                .background(segment == seg ? Color.appAccentTint : Color.clear)
-                                .cornerRadius(10)
-                        }
-                    }
-                }
-                .padding(.horizontal, 16)
-                .padding(.vertical, 10)
-                .background(Color.appBackground)
-
-                Divider().overlay(Color.appBorder)
-
-                if segment == .research {
-                    ResearchInlineView()
-                } else {
             ScrollView {
                 VStack(spacing: 16) {
                     if activeProtocols.isEmpty {
@@ -192,18 +164,19 @@ struct ProtocolTabView: View {
                 .padding(16)
             }
             .background(Color.appBackground)
-                } // end else (protocol segment)
-            } // end VStack
-            .background(Color.appBackground)
-            .navigationTitle("Protocol")
+            .navigationTitle("Stack")
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
-                    Button(action: { showAddProtocol = true }) {
+                    Button(action: { showStackImport = true }) {
                         Image(systemName: "plus")
                             .font(.system(size: 16, weight: .semibold))
                             .foregroundColor(Color.appAccent)
                     }
                 }
+            }
+            .sheet(isPresented: $showStackImport) {
+                StackImportView()
+                    .environmentObject(authManager)
             }
             .sheet(isPresented: $showAddProtocol) {
                 AddProtocolSheet()
@@ -238,15 +211,15 @@ struct ProtocolTabView: View {
             Image(systemName: "drop.circle")
                 .font(.system(size: 48))
                 .foregroundColor(Color.appBorder)
-            Text("No active protocol")
+            Text("Build your stack")
                 .font(.system(size: 18, weight: .bold))
                 .foregroundColor(Color.appTextPrimary)
-            Text("Add your peptide stack to get dose reminders and unlock your Partition Plan.")
+            Text("Add the peptides you're running to get dose reminders and unlock your Partition Plan.")
                 .font(.system(size: 14))
                 .foregroundColor(Color.appTextTertiary)
                 .multilineTextAlignment(.center)
-            Button(action: { showAddProtocol = true }) {
-                Text("Add Protocol")
+            Button(action: { showStackImport = true }) {
+                Text("Add my stack")
                     .font(.system(size: 15, weight: .bold))
                     .foregroundColor(.white)
                     .padding(.horizontal, 28)
@@ -1168,74 +1141,5 @@ struct DoseHistorySheet: View {
     }
 }
 
-// MARK: - Research Inline View
-
-struct ResearchInlineView: View {
-    @State private var compounds: [Compound] = []
-    @State private var searchText = ""
-    @State private var isLoading = true
-    @State private var errorMessage: String?
-
-    var filtered: [Compound] {
-        if searchText.isEmpty { return compounds }
-        return compounds.filter {
-            $0.name.localizedCaseInsensitiveContains(searchText) ||
-            $0.benefits.joined().localizedCaseInsensitiveContains(searchText)
-        }
-    }
-
-    var body: some View {
-        Group {
-            if isLoading {
-                ProgressView()
-                    .frame(maxWidth: .infinity, maxHeight: .infinity)
-                    .background(Color.appBackground)
-            } else if let error = errorMessage {
-                VStack(spacing: 12) {
-                    Text("Couldn't load compounds")
-                        .font(.system(size: 15, weight: .bold))
-                        .foregroundColor(Color.appTextPrimary)
-                    Text(error).font(.system(size: 13)).foregroundColor(Color.appTextTertiary)
-                    Button("Retry") { Task { await load() } }
-                        .foregroundColor(Color.appAccent)
-                }
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
-                .background(Color.appBackground)
-            } else {
-                ScrollView {
-                    LazyVStack(spacing: 10) {
-                        ForEach(filtered) { compound in
-                            NavigationLink(destination: CompoundDetailView(compound: compound)) {
-                                CompoundRowView(compound: compound)
-                            }
-                            .buttonStyle(.plain)
-                        }
-                    }
-                    .padding(16)
-                }
-                .background(Color.appBackground)
-                .searchable(text: $searchText, prompt: "Search compounds")
-            }
-        }
-        .task { await load() }
-    }
-
-    private func load() async {
-        isLoading = true
-        errorMessage = nil
-        do {
-            let result: [Compound] = try await Task.detached {
-                try await supabase
-                    .from("compounds")
-                    .select()
-                    .order("name")
-                    .execute()
-                    .value
-            }.value
-            compounds = result
-        } catch {
-            errorMessage = error.localizedDescription
-        }
-        isLoading = false
-    }
-}
+// (ResearchInlineView removed — Research now lives only in its own bottom-tab,
+//  the in-Stack sub-segment was redundant and confusing.)

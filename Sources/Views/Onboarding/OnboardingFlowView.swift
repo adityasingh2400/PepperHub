@@ -4,7 +4,7 @@ import SwiftUI
 
 @MainActor
 final class OnboardingViewModel: ObservableObject {
-    @Published var step = 1  // 1-14
+    @Published var step = 1  // 1-12 (peptide goals → fitness → stats → protocol → numbers → trial)
 
     // Step 1 — Goal
     @Published var goal: Goal = .recomp
@@ -367,7 +367,7 @@ struct OnboardingFlowView: View {
             Analytics.capture(.onboardingStarted)
         }
         .onChange(of: vm.step) { _, newStep in
-            Analytics.capture(.onboardingStepCompleted, properties: ["step": newStep - 1, "total_steps": 14])
+            Analytics.capture(.onboardingStepCompleted, properties: ["step": newStep - 1, "total_steps": 12])
         }
     }
 
@@ -393,7 +393,7 @@ struct OnboardingFlowView: View {
             .padding(.horizontal, 16)
             .padding(.top, 8)
 
-            // Progress bar
+            // Progress bar (12 steps total, peptide goals first)
             GeometryReader { geo in
                 ZStack(alignment: .leading) {
                     Capsule()
@@ -401,7 +401,7 @@ struct OnboardingFlowView: View {
                         .frame(height: 3)
                     Capsule()
                         .fill(Color.appAccent)
-                        .frame(width: geo.size.width * CGFloat(vm.step - 1) / 10.0, height: 3)
+                        .frame(width: geo.size.width * CGFloat(vm.step - 1) / 11.0, height: 3)
                         .animation(.easeInOut(duration: 0.3), value: vm.step)
                 }
             }
@@ -411,23 +411,42 @@ struct OnboardingFlowView: View {
     }
 
     // MARK: Step routing
+    //
+    // Order is intentional: we ask "what do you want from peptides" first
+    // because every downstream question (fitness goal, body stats, protocol)
+    // is more useful once we know what the user is optimizing for.
 
     @ViewBuilder
     private var stepContent: some View {
         switch vm.step {
-        case 1:  Step1GoalView(vm: vm)
-        case 2:  Step2ExperienceView(vm: vm)
-        case 3:  Step3SexView(vm: vm)
-        case 4:  Step4AgeView(vm: vm)
-        case 5:  Step5HeightView(vm: vm)
-        case 6:  Step6WeightView(vm: vm)
-        case 7:  Step7ActivityView(vm: vm)
-        case 8:  Step8TrainingDaysView(vm: vm)
-        case 9:  Step9EatingStyleView(vm: vm)
-        case 10: Step10ProtocolView(vm: vm)
-        case 11: Step11NumbersView(vm: vm)
+        case 1:  Step0PeptideGoalsView(vm: vm)
+        case 2:  Step1GoalView(vm: vm)
+        case 3:  Step2ExperienceView(vm: vm)
+        case 4:  Step3SexView(vm: vm)
+        case 5:  Step4AgeView(vm: vm)
+        case 6:  Step5HeightView(vm: vm)
+        case 7:  Step6WeightView(vm: vm)
+        case 8:  Step7ActivityView(vm: vm)
+        case 9:  Step8TrainingDaysView(vm: vm)
+        case 10: Step9EatingStyleView(vm: vm)
+        case 11: Step10ProtocolView(vm: vm)
+        case 12: Step11NumbersView(vm: vm)
         default: OnboardingTrialView(vm: vm)
         }
+    }
+}
+
+// MARK: - Step 0: Peptide goals (asked first so everything else is contextual)
+
+private struct Step0PeptideGoalsView: View {
+    @ObservedObject var vm: OnboardingViewModel
+
+    var body: some View {
+        OnboardingGoalsView(
+            selected: $vm.peptideGoals,
+            onContinue: { withAnimation { vm.step += 1 } },
+            onSkip: { withAnimation { vm.step += 1 } }
+        )
     }
 }
 
@@ -958,19 +977,21 @@ private struct Step9EatingStyleView: View {
     }
 }
 
-// MARK: - Step 10: Protocol (three-phase: yes/no → goals → compound picker)
+// MARK: - Step 10: Protocol (two-phase: yes/no → compound picker)
+//
+// Peptide goals are now collected as Step 0, so this step only asks
+// whether the user is currently on a protocol and (if yes) which compounds.
 
 private struct Step10ProtocolView: View {
     @ObservedObject var vm: OnboardingViewModel
     @State private var phase: Phase = .yesNo
 
-    enum Phase { case yesNo, goals, picker }
+    enum Phase { case yesNo, picker }
 
     var body: some View {
         VStack(spacing: 0) {
             switch phase {
             case .yesNo:  yesNoView
-            case .goals:  goalsView
             case .picker: compoundPicker
             }
         }
@@ -985,7 +1006,7 @@ private struct Step10ProtocolView: View {
             VStack(spacing: 12) {
                 Button {
                     vm.hasProtocol = true
-                    withAnimation { phase = .goals }
+                    withAnimation { phase = .picker }
                 } label: {
                     SelectionCard(title: "Yes",
                                   subtitle: "I'm currently using peptides",
@@ -1010,14 +1031,6 @@ private struct Step10ProtocolView: View {
 
             Spacer()
         }
-    }
-
-    private var goalsView: some View {
-        OnboardingGoalsView(
-            selected: $vm.peptideGoals,
-            onContinue: { withAnimation { phase = .picker } },
-            onSkip: { withAnimation { phase = .picker } }
-        )
     }
 
     private var compoundPicker: some View {

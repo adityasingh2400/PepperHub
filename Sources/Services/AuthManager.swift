@@ -90,7 +90,32 @@ final class AuthManager: ObservableObject {
 
     func signOut() async throws {
         try await supabase.auth.signOut()
+        previewMode = false
         Analytics.capture(.signedOut)
         Analytics.reset()
     }
+
+    #if DEBUG
+    /// Local-only auth bypass for fast iteration. Sets `previewMode` so
+    /// `PeptideApp` routes straight to `MainTabView` without ever hitting
+    /// Supabase. Anything that reads `session?.user.id` will see nil — code
+    /// paths that need a user id should fall back to `previewUserId` instead.
+    /// Compiled out of release builds.
+    func enableDebugPreviewMode() {
+        previewMode = true
+        needsOnboarding = false
+        isLoading = false
+        Analytics.capture(.signedIn, properties: ["method": "debug_preview"])
+    }
+
+    /// Stable per-install UUID used by sync code when running in preview mode,
+    /// so SwiftData rows still get a consistent owner.
+    static let previewUserId: String = {
+        let key = "debug_preview_user_id"
+        if let stored = UserDefaults.standard.string(forKey: key) { return stored }
+        let id = UUID().uuidString
+        UserDefaults.standard.set(id, forKey: key)
+        return id
+    }()
+    #endif
 }
