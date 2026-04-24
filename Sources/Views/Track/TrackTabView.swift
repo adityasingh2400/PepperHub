@@ -315,7 +315,7 @@ struct CreateRoutineSheet: View {
         guard let userId = authManager.session?.user.id.uuidString else { return }
         let routine = LocalRoutine(userId: userId, name: name.trimmingCharacters(in: .whitespaces))
         ctx.insert(routine)
-        for (i, var ex) in exercises.enumerated() {
+        for (i, ex) in exercises.enumerated() {
             ex.routineId = routine.id
             ex.order = i
             ctx.insert(ex)
@@ -428,7 +428,7 @@ struct EditRoutineSheet: View {
         routine.name = name.trimmingCharacters(in: .whitespaces)
         let old = allRoutineExercises.filter { $0.routineId == routine.id }
         old.forEach { ctx.delete($0) }
-        for (i, var ex) in exercises.enumerated() {
+        for (i, ex) in exercises.enumerated() {
             ex.routineId = routine.id
             ex.order = i
             ctx.insert(ex)

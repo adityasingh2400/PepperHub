@@ -29,7 +29,7 @@ struct OnboardingBodyView: View {
                         text: $weightText,
                         keyboardType: .decimalPad
                     )
-                    .onChange(of: weightText) { val in
+                    .onChange(of: weightText) { _, val in
                         if let d = Double(val) {
                             vm.weightKg = vm.useImperial ? d / 2.20462 : d
                         }
@@ -44,13 +44,13 @@ struct OnboardingBodyView: View {
                     if vm.useImperial {
                         HStack(spacing: 4) {
                             PTextField(placeholder: "ft", text: $heightFtText, keyboardType: .numberPad)
-                                .onChange(of: heightFtText) { _ in syncHeight() }
+                                .onChange(of: heightFtText) { _, _ in syncHeight() }
                             PTextField(placeholder: "in", text: $heightInText, keyboardType: .decimalPad)
-                                .onChange(of: heightInText) { _ in syncHeight() }
+                                .onChange(of: heightInText) { _, _ in syncHeight() }
                         }
                     } else {
                         PTextField(placeholder: "cm", text: $heightCmText, keyboardType: .decimalPad)
-                            .onChange(of: heightCmText) { val in
+                            .onChange(of: heightCmText) { _, val in
                                 if let d = Double(val) { vm.heightCm = d }
                             }
                     }
@@ -58,7 +58,7 @@ struct OnboardingBodyView: View {
 
                 OnboardingSection(title: "Age") {
                     PTextField(placeholder: "yrs", text: $ageText, keyboardType: .numberPad)
-                        .onChange(of: ageText) { val in
+                        .onChange(of: ageText) { _, val in
                             if let i = Int(val) { vm.age = i }
                         }
                 }

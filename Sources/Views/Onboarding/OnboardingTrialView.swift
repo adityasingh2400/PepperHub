@@ -245,7 +245,7 @@ struct OnboardingTrialView: View {
             }
         }
 
-        await NotificationScheduler.requestPermission()
+        _ = await NotificationScheduler.requestPermission()
     }
 
     // Sensible defaults so the protocol is usable immediately.

@@ -47,7 +47,7 @@ final class AuthManager: ObservableObject {
 
     private func listenForAuthChanges() {
         Task {
-            for await (event, s) in await supabase.auth.authStateChanges {
+            for await (event, s) in supabase.auth.authStateChanges {
                 switch event {
                 case .signedIn, .tokenRefreshed:
                     if !needsOnboarding {
