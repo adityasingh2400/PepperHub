@@ -11,6 +11,7 @@ import SwiftUI
 ///   - `openCompound(_:)` — push a compound detail when leaving the user on Research
 ///   - `presentDosingCalculator(for:)` — pop the calculator sheet for a compound
 ///   - `presentPinningProtocol(for:)` — pop the pinning sheet for a compound
+///   - `presentInjectionTracker()` — open the 3D injection site tracker
 ///   - `presentVoiceNavigator()` — open the floating voice navigator overlay
 @MainActor
 final class NavigationCoordinator: ObservableObject {
@@ -52,6 +53,7 @@ final class NavigationCoordinator: ObservableObject {
     /// Sheet presentations driven from the voice navigator.
     @Published var dosingCalculatorCompound: Compound? = nil
     @Published var pinningProtocolCompound: Compound? = nil
+    @Published var showInjectionTracker = false
 
     /// Voice navigator overlay visibility.
     @Published var showVoiceNavigator = false
@@ -84,8 +86,19 @@ final class NavigationCoordinator: ObservableObject {
         pinningProtocolCompound = compound
     }
 
+    func presentInjectionTracker() {
+        switchTab(.protocol)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) { [weak self] in
+            self?.showInjectionTracker = true
+        }
+    }
+
     func presentVoiceNavigator() {
         showVoiceNavigator = true
+    }
+
+    func dismissVoiceNavigator() {
+        showVoiceNavigator = false
     }
 
     func presentPepper() {

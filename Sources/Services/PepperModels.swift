@@ -47,6 +47,8 @@ struct PepperToolCall: Identifiable, Sendable {
             return "Open dosing calculator for \(i.compoundName)"
         case .openPinningProto(let i):
             return "Open pinning protocol for \(i.compoundName)"
+        case .openInjectionTracker:
+            return "Open injection site tracker"
         case .spotlight(let i):
             return "Highlight \(i.anchorId)"
         }
@@ -66,6 +68,7 @@ enum PepperToolInput: Sendable {
     case openCompound(OpenCompoundInput)
     case openDosingCalc(OpenCompoundInput)
     case openPinningProto(OpenCompoundInput)
+    case openInjectionTracker(OpenInjectionTrackerInput)
     case spotlight(SpotlightInput)
 }
 
@@ -76,6 +79,8 @@ struct NavigateTabInput: Codable, Sendable {
 struct OpenCompoundInput: Codable, Sendable {
     let compoundName: String
 }
+
+struct OpenInjectionTrackerInput: Codable, Sendable {}
 
 struct SpotlightInput: Codable, Sendable {
     let anchorId: String
@@ -318,6 +323,15 @@ nonisolated(unsafe) let pepperToolDefinitions: [[String: Any]] = [
                 "compoundName": ["type": "string", "description": "Compound name"]
             ],
             "required": ["compoundName"]
+        ]
+    ],
+    [
+        "name": "open_injection_tracker",
+        "description": "Open the app's 3D Injection Site Tracker. Use when the user asks to open, show, see, or tell them about the injection site tracker, injection sites, or site rotation.",
+        "input_schema": [
+            "type": "object",
+            "properties": [:],
+            "required": []
         ]
     ],
     [

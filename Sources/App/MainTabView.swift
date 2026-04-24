@@ -48,16 +48,25 @@ struct MainTabView: View {
             }
             .environmentObject(nav)
 
-            // Primary bubble = voice (tap to open & listen, tap mic again to stop).
-            // Secondary small chat button below for AskPepper text chat.
-            VStack(spacing: 10) {
-                PepperBubbleButton(onTap: { nav.presentVoiceNavigator() })
-                PepperChatButton(onTap: { nav.presentPepper() })
+            if nav.showVoiceNavigator {
+                VoiceNavigatorView()
+                    .environmentObject(nav)
+                    .transition(.opacity)
+                    .zIndex(2)
+            } else {
+                // Primary bubble = voice. Secondary small chat button below for AskPepper text chat.
+                VStack(spacing: 10) {
+                    PepperBubbleButton(onTap: { nav.presentVoiceNavigator() })
+                    PepperChatButton(onTap: { nav.presentPepper() })
+                }
+                .padding(.trailing, 16)
+                .padding(.bottom, 96)
+                .environmentObject(nav)
+                .transition(.opacity)
+                .zIndex(1)
             }
-            .padding(.trailing, 16)
-            .padding(.bottom, 96)
-            .environmentObject(nav)
         }
+        .animation(.easeInOut(duration: 0.2), value: nav.showVoiceNavigator)
         .sheet(isPresented: $nav.showPepper) {
             AskPepperView()
                 .presentationDetents([.large])
@@ -65,16 +74,15 @@ struct MainTabView: View {
                 .presentationCornerRadius(28)
                 .presentationBackground(Color.appBackground)
         }
-        .fullScreenCover(isPresented: $nav.showVoiceNavigator) {
-            VoiceNavigatorView()
-                .environmentObject(nav)
-                .presentationBackground(.clear)
-        }
         .sheet(item: $nav.dosingCalculatorCompound) { compound in
             DosingCalculatorView(compound: compound)
         }
         .sheet(item: $nav.pinningProtocolCompound) { compound in
             PinningProtocolView(compound: compound)
+        }
+        .sheet(isPresented: $nav.showInjectionTracker) {
+            InjectionTrackerView()
+                .environmentObject(authManager)
         }
         .onChange(of: nav.showPepper) { _, opened in
             if opened { Analytics.capture(.pepperOpened) }

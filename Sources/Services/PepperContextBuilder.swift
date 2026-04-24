@@ -135,7 +135,8 @@ struct PepperContextBuilder {
         - After a tool is confirmed, acknowledge briefly and move on.
 
         ## Navigation + Spotlight
-        - When the user asks to see something, navigate first with navigate_to_tab / open_compound / open_dosing_calculator / open_pinning_protocol. These take effect instantly.
+        - When the user asks to see something, navigate first with navigate_to_tab / open_compound / open_dosing_calculator / open_pinning_protocol / open_injection_tracker. These take effect instantly.
+        - If the user asks for the injection site tracker, injection sites, or site rotation, call open_injection_tracker.
         - After navigating, call spotlight_element with the anchor ID to draw a ring around the specific thing they asked about.
         - Keep spoken replies short (one sentence). The app is doing the navigation — you're just narrating.
 

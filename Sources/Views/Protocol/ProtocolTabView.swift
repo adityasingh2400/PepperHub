@@ -5,6 +5,7 @@ struct ProtocolTabView: View {
     @EnvironmentObject private var authManager: AuthManager
     @EnvironmentObject private var appState: AppState
     @EnvironmentObject private var purchases: PurchasesManager
+    @EnvironmentObject private var nav: NavigationCoordinator
     @Environment(\.modelContext) private var ctx
 
     @Query private var activeProtocols: [LocalProtocol]
@@ -28,7 +29,6 @@ struct ProtocolTabView: View {
     @State private var showDoseHistory = false
     @State private var showLogSideEffect = false
     @State private var showSideEffectHistory = false
-    @State private var showInjectionTracker = false
 
     var body: some View {
         NavigationStack {
@@ -64,7 +64,7 @@ struct ProtocolTabView: View {
                     }
 
                     // Injection Tracker
-                    Button(action: { showInjectionTracker = true }) {
+                    Button(action: { nav.presentInjectionTracker() }) {
                         HStack(spacing: 14) {
                             ZStack {
                                 RoundedRectangle(cornerRadius: 10)
@@ -237,10 +237,6 @@ struct ProtocolTabView: View {
             }
             .sheet(isPresented: $showSideEffectHistory) {
                 SideEffectHistorySheet(effects: sideEffects)
-            }
-            .sheet(isPresented: $showInjectionTracker) {
-                InjectionTrackerView()
-                    .environmentObject(authManager)
             }
         }
     }

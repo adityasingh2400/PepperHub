@@ -183,7 +183,7 @@ final class PepperService: ObservableObject {
                 let readOnlyTools: Set<String> = [
                     "search_food",
                     "navigate_to_tab", "open_compound", "open_dosing_calculator",
-                    "open_pinning_protocol", "spotlight_element"
+                    "open_pinning_protocol", "open_injection_tracker", "spotlight_element"
                 ]
                 let isReadOnly = readOnlyTools.contains(toolBlock.toolName)
                 let toolCall = PepperToolCall(
@@ -270,6 +270,8 @@ final class PepperService: ObservableObject {
             return openDosingCalc(input)
         case .openPinningProto(let input):
             return openPinningProto(input)
+        case .openInjectionTracker(let input):
+            return openInjectionTracker(input)
         case .spotlight(let input):
             return spotlightElement(input)
         }
@@ -328,6 +330,12 @@ final class PepperService: ObservableObject {
             nav.presentPinningProtocol(for: compound)
         }
         return "Opened pinning protocol for \(compound.name)"
+    }
+
+    private func openInjectionTracker(_ input: OpenInjectionTrackerInput) -> String {
+        guard let nav = navigation else { return "Navigation unavailable" }
+        nav.presentInjectionTracker()
+        return "Opened injection site tracker"
     }
 
     private func spotlightElement(_ input: SpotlightInput) -> String {
@@ -497,6 +505,9 @@ final class PepperService: ObservableObject {
         case "open_pinning_protocol":
             guard let input = try? decoder.decode(OpenCompoundInput.self, from: data) else { return nil }
             return .openPinningProto(input)
+        case "open_injection_tracker":
+            guard let input = try? decoder.decode(OpenInjectionTrackerInput.self, from: data) else { return nil }
+            return .openInjectionTracker(input)
         case "spotlight_element":
             guard let input = try? decoder.decode(SpotlightInput.self, from: data) else { return nil }
             return .spotlight(input)
