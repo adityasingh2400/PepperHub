@@ -48,9 +48,16 @@ struct MainTabView: View {
             }
             .environmentObject(nav)
 
+            VoiceNavigatorPrewarmView()
+                .allowsHitTesting(false)
+                .accessibilityHidden(true)
+                .zIndex(0.5)
+
             if nav.showVoiceNavigator {
                 VoiceNavigatorView()
                     .environmentObject(nav)
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .ignoresSafeArea(.all)
                     .transition(.opacity)
                     .zIndex(2)
             } else {

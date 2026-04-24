@@ -26,14 +26,17 @@ struct VoiceNavigatorView: View {
 
     var body: some View {
         GeometryReader { proxy in
+            let voiceCenter = voiceButtonCenter(in: proxy.size)
+            let topInset = inferredTopSafeInset(proxy)
             ZStack(alignment: .bottomTrailing) {
                 VoicePerimeterGlow(
                     progress: traceProgress,
                     isSettled: glowSettled,
                     showRipple: completionRipple,
                     audioLevel: CGFloat(voice.audioLevel),
-                    sourcePoint: voiceButtonCenter(in: proxy.size),
-                    sourceYRatio: voiceButtonCenter(in: proxy.size).y / max(proxy.size.height, 1)
+                    sourcePoint: voiceCenter,
+                    sourceYRatio: voiceCenter.y / max(proxy.size.height, 1),
+                    topSafeInset: topInset
                 )
                 .allowsHitTesting(false)
 
@@ -56,9 +59,10 @@ struct VoiceNavigatorView: View {
         }
         .ignoresSafeArea()
         .task {
-            startPerimeterAnimation()
             sentMessageStartIndex = pepperService.messages.count
-            await voice.start(contextualStrings: navigationVocabulary())
+            Task { await voice.start(contextualStrings: navigationVocabulary()) }
+            try? await Task.sleep(nanoseconds: 70_000_000)
+            startPerimeterAnimation()
         }
         .onDisappear {
             autoSubmitTask?.cancel()
@@ -162,6 +166,13 @@ struct VoiceNavigatorView: View {
 
     private func voiceButtonCenter(in size: CGSize) -> CGPoint {
         CGPoint(x: size.width - 44, y: size.height - 174)
+    }
+
+    private func inferredTopSafeInset(_ proxy: GeometryProxy) -> CGFloat {
+        if proxy.safeAreaInsets.top > 0 {
+            return proxy.safeAreaInsets.top
+        }
+        return proxy.size.height >= 780 ? 47 : 0
     }
 
     private func startPerimeterAnimation() {
@@ -295,6 +306,8 @@ private struct VoicePerimeterGlow: View {
     let audioLevel: CGFloat
     let sourcePoint: CGPoint
     let sourceYRatio: CGFloat
+    let topSafeInset: CGFloat
+    var flowEnabled = true
 
     @State private var flowPhase = false
 
@@ -366,6 +379,10 @@ private struct VoicePerimeterGlow: View {
         .animation(.easeOut(duration: 0.42), value: showRipple)
         .drawingGroup()
         .onAppear {
+            guard flowEnabled else {
+                flowPhase = true
+                return
+            }
             withAnimation(.linear(duration: 3.2).repeatForever(autoreverses: false)) {
                 flowPhase = true
             }
@@ -373,13 +390,14 @@ private struct VoicePerimeterGlow: View {
     }
 
     private func perimeter(_ progress: CGFloat) -> VoicePerimeterShape {
-        VoicePerimeterShape(progress: progress, sourceYRatio: sourceYRatio)
+        VoicePerimeterShape(progress: progress, sourceYRatio: sourceYRatio, topSafeInset: topSafeInset)
     }
 }
 
 private struct VoicePerimeterShape: Shape {
     var progress: CGFloat
     var sourceYRatio: CGFloat
+    var topSafeInset: CGFloat
 
     var animatableData: AnimatablePair<CGFloat, CGFloat> {
         get { AnimatablePair(progress, sourceYRatio) }
@@ -390,14 +408,15 @@ private struct VoicePerimeterShape: Shape {
     }
 
     func path(in rect: CGRect) -> Path {
-        let inset: CGFloat = 2.5
+        let inset: CGFloat = 0.8
         let bounds = rect.insetBy(dx: inset, dy: inset)
-        let radius = min(bounds.width, bounds.height) * 0.045
-        let r = min(max(radius, 18), 30)
+        let radius = min(bounds.width, bounds.height) * 0.055
+        let r = min(max(radius, 22), 36)
         let sourceY = min(
             max(bounds.minY + bounds.height * sourceYRatio, bounds.minY + r),
             bounds.maxY - r
         )
+        let notch = notchMetrics(in: bounds)
 
         var path = Path()
         path.move(to: CGPoint(x: bounds.maxX, y: sourceY))
@@ -416,6 +435,30 @@ private struct VoicePerimeterShape: Shape {
             to: CGPoint(x: bounds.minX + r, y: bounds.minY),
             control: CGPoint(x: bounds.minX, y: bounds.minY)
         )
+        if let notch {
+            path.addLine(to: CGPoint(x: notch.left - notch.shoulder, y: bounds.minY))
+            path.addCurve(
+                to: CGPoint(x: notch.left, y: bounds.minY + notch.depth * 0.54),
+                control1: CGPoint(x: notch.left - notch.shoulder * 0.36, y: bounds.minY),
+                control2: CGPoint(x: notch.left, y: bounds.minY + notch.depth * 0.16)
+            )
+            path.addCurve(
+                to: CGPoint(x: notch.left + notch.shoulder, y: bounds.minY + notch.depth),
+                control1: CGPoint(x: notch.left, y: bounds.minY + notch.depth * 0.86),
+                control2: CGPoint(x: notch.left + notch.shoulder * 0.34, y: bounds.minY + notch.depth)
+            )
+            path.addLine(to: CGPoint(x: notch.right - notch.shoulder, y: bounds.minY + notch.depth))
+            path.addCurve(
+                to: CGPoint(x: notch.right, y: bounds.minY + notch.depth * 0.54),
+                control1: CGPoint(x: notch.right - notch.shoulder * 0.34, y: bounds.minY + notch.depth),
+                control2: CGPoint(x: notch.right, y: bounds.minY + notch.depth * 0.86)
+            )
+            path.addCurve(
+                to: CGPoint(x: notch.right + notch.shoulder, y: bounds.minY),
+                control1: CGPoint(x: notch.right, y: bounds.minY + notch.depth * 0.16),
+                control2: CGPoint(x: notch.right + notch.shoulder * 0.36, y: bounds.minY)
+            )
+        }
         path.addLine(to: CGPoint(x: bounds.maxX - r, y: bounds.minY))
         path.addQuadCurve(
             to: CGPoint(x: bounds.maxX, y: bounds.minY + r),
@@ -424,6 +467,41 @@ private struct VoicePerimeterShape: Shape {
         path.addLine(to: CGPoint(x: bounds.maxX, y: sourceY))
 
         return path.trimmedPath(from: 0, to: min(max(progress, 0), 1))
+    }
+
+    private func notchMetrics(in bounds: CGRect) -> (left: CGFloat, right: CGFloat, depth: CGFloat, shoulder: CGFloat)? {
+        guard topSafeInset >= 38, bounds.width >= 320 else { return nil }
+        let centerX = bounds.midX
+        let halfWidth = min(max(bounds.width * 0.205, 72), 92)
+        let depth = min(max(topSafeInset - 10, 30), 42)
+        let shoulder = min(max(bounds.width * 0.048, 16), 22)
+        return (
+            left: centerX - halfWidth,
+            right: centerX + halfWidth,
+            depth: depth,
+            shoulder: shoulder
+        )
+    }
+}
+
+struct VoiceNavigatorPrewarmView: View {
+    var body: some View {
+        GeometryReader { proxy in
+            let sourcePoint = CGPoint(x: proxy.size.width - 44, y: proxy.size.height - 174)
+            let topInset = proxy.safeAreaInsets.top > 0 ? proxy.safeAreaInsets.top : (proxy.size.height >= 780 ? 47 : 0)
+            VoicePerimeterGlow(
+                progress: 1,
+                isSettled: true,
+                showRipple: false,
+                audioLevel: 0,
+                sourcePoint: sourcePoint,
+                sourceYRatio: sourcePoint.y / max(proxy.size.height, 1),
+                topSafeInset: topInset,
+                flowEnabled: false
+            )
+            .opacity(0.001)
+        }
+        .ignoresSafeArea()
     }
 }
 
