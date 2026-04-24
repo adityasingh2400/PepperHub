@@ -42,6 +42,7 @@
 		7F0AF604F49071432B1A0D87 /* PrivacyPolicyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEA62E288498A45ECB24D384 /* PrivacyPolicyView.swift */; };
 		8000882C43C1A7CC1DE2E3A7 /* NudgeEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5749C3D684B1992D8AE65B5F /* NudgeEngine.swift */; };
 		809B45E7BA962701EB4216F5 /* VoiceNavigatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF2EA280BEF4E2AB842C676D /* VoiceNavigatorView.swift */; };
+		85000044B9C3570FA104A10C /* PepperSpotlight.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BB1730CE8478D1B456EEB67 /* PepperSpotlight.swift */; };
 		8823B02EBAD0DA63BB007F0A /* body.obj in Resources */ = {isa = PBXBuildFile; fileRef = 7127D517CEB76E0DE852E313 /* body.obj */; };
 		8881F38842433B366966770D /* MainTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E90F5C9CC4F01BEAFFFC864 /* MainTabView.swift */; };
 		892124118AD69972FB39F762 /* OnboardingTrialView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F85AE984B455CD7B3002A97 /* OnboardingTrialView.swift */; };
@@ -82,6 +83,7 @@
 		EA130F1EF1600AD22B036522 /* PostHog in Frameworks */ = {isa = PBXBuildFile; productRef = A417C4F2E3ECF95B02E08DCB /* PostHog */; };
 		EAA3579483953D71C5B20780 /* Compound.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DB6327A6B6BE70607338173 /* Compound.swift */; };
 		EB2253F1F4ECCE438EB5E477 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 058D4DB3BB7FB5A2E2FDCF32 /* Assets.xcassets */; };
+		F1CA442814B442562B147FF6 /* APIKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B564722A3686BFAA42F39AD /* APIKeys.swift */; };
 		F1F465BEEF7BF4E117DA70B7 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2EE90CF0787BD8DC1D4F59A /* SettingsView.swift */; };
 		F4CD50DC0AF911687607B99D /* VoiceIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08E994D55DE0711618AF440C /* VoiceIntent.swift */; };
 		F94374DCCDC4CE7A4F271880 /* SupabaseClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15DB48CB21F5DA7F35B6966C /* SupabaseClient.swift */; };
@@ -125,6 +127,7 @@
 		307D6C67FEE3B5A964C881E7 /* NotificationScheduler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationScheduler.swift; sourceTree = "<group>"; };
 		31ACAA9EE356CB22FDD6D04A /* AuthManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthManager.swift; sourceTree = "<group>"; };
 		33ADA76A6D88E5EF9202B08A /* DosingFormula.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DosingFormula.swift; sourceTree = "<group>"; };
+		3B564722A3686BFAA42F39AD /* APIKeys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIKeys.swift; sourceTree = "<group>"; };
 		3C28C870AF0B99649B38270C /* PeptideTimelineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeptideTimelineView.swift; sourceTree = "<group>"; };
 		44590837E2D24B259E42580E /* StackRecommender.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StackRecommender.swift; sourceTree = "<group>"; };
 		452EA4D408F6C222548AFE28 /* SwiftDataModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftDataModels.swift; sourceTree = "<group>"; };
@@ -153,6 +156,7 @@
 		83EF1C2877E8A8C14B12F176 /* NavigationCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationCoordinator.swift; sourceTree = "<group>"; };
 		8629AC5349E466A634E49CB9 /* ColorExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorExtension.swift; sourceTree = "<group>"; };
 		884BF69D72044410038548F2 /* SplashView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashView.swift; sourceTree = "<group>"; };
+		8BB1730CE8478D1B456EEB67 /* PepperSpotlight.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PepperSpotlight.swift; sourceTree = "<group>"; };
 		8E48A21DCF929DD3C1C84A3F /* StackImportView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StackImportView.swift; sourceTree = "<group>"; };
 		94664F5884BE502877EF5DD9 /* PaywallView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaywallView.swift; sourceTree = "<group>"; };
 		951AE98846C374F5BECFA160 /* SyncService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncService.swift; sourceTree = "<group>"; };
@@ -180,7 +184,7 @@
 		E316347F2770670754F356D8 /* TrackTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackTabView.swift; sourceTree = "<group>"; };
 		EA9A178DE37346A62C3CFA39 /* body.glb */ = {isa = PBXFileReference; path = body.glb; sourceTree = "<group>"; };
 		F7ADA16AA8D67B19118727DC /* FlowLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlowLayout.swift; sourceTree = "<group>"; };
-		"TEMP_88680B79-8D5D-490A-ABEE-8C21E807B5B2" /* signing.local.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = signing.local.xcconfig; sourceTree = "<group>"; };
+		"TEMP_F5DDAF0D-C5DA-4732-B335-1CB033B4A2BD" /* signing.local.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = signing.local.xcconfig; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -202,6 +206,7 @@
 		0F68A98D60EE1535FE6F1529 /* Supporting */ = {
 			isa = PBXGroup;
 			children = (
+				3B564722A3686BFAA42F39AD /* APIKeys.swift */,
 				DFD346FCAF6AADDF330F4A97 /* APIKeys.swift.example */,
 			);
 			path = Supporting;
@@ -273,6 +278,7 @@
 				648CAF1BCC80EE0DA43023CC /* PepperContextBuilder.swift */,
 				1DEE0D62385E013F3E74DA04 /* PepperModels.swift */,
 				1DC9DAA4ACFF3CB8267F8DB7 /* PepperService.swift */,
+				8BB1730CE8478D1B456EEB67 /* PepperSpotlight.swift */,
 				1EECE96E8FD10C2E3E738D13 /* PurchasesManager.swift */,
 				D1632C678078BEB0665AA2ED /* StackParser.swift */,
 				44590837E2D24B259E42580E /* StackRecommender.swift */,
@@ -452,10 +458,10 @@
 			path = Resources;
 			sourceTree = "<group>";
 		};
-		"TEMP_47F22448-C4B5-401C-9229-AE4C72836F42" /* Peptide */ = {
+		"TEMP_28EC5F6B-BC51-472B-B05B-D92B8821AA72" /* Peptide */ = {
 			isa = PBXGroup;
 			children = (
-				"TEMP_88680B79-8D5D-490A-ABEE-8C21E807B5B2" /* signing.local.xcconfig */,
+				"TEMP_F5DDAF0D-C5DA-4732-B335-1CB033B4A2BD" /* signing.local.xcconfig */,
 			);
 			path = Peptide;
 			sourceTree = "<group>";
@@ -583,6 +589,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F1CA442814B442562B147FF6 /* APIKeys.swift in Sources */,
 				FBE740CF4A901B737C9BEEAA /* Analytics.swift in Sources */,
 				C124B6C82F158DF46E109ED6 /* AnatomicalBodyView.swift in Sources */,
 				7546DB80CD5A3A000505D8E1 /* AppState.swift in Sources */,
@@ -622,6 +629,7 @@
 				0C1D77D43F4A0920459F42CB /* PepperContextBuilder.swift in Sources */,
 				932AB36FD0950BD7DDA83F04 /* PepperModels.swift in Sources */,
 				0C8A239A8443142568C3E911 /* PepperService.swift in Sources */,
+				85000044B9C3570FA104A10C /* PepperSpotlight.swift in Sources */,
 				AF825FC006426E88FCAFFE47 /* PeptideApp.swift in Sources */,
 				1A91E7BBEB1A2DE59A7E5808 /* PeptideTimeline.swift in Sources */,
 				8B84FA222086FE66EA43940A /* PeptideTimelineView.swift in Sources */,
@@ -694,7 +702,7 @@
 		};
 		394DEFBB905690069F45F343 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = "TEMP_88680B79-8D5D-490A-ABEE-8C21E807B5B2" /* signing.local.xcconfig */;
+			baseConfigurationReference = "TEMP_F5DDAF0D-C5DA-4732-B335-1CB033B4A2BD" /* signing.local.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -769,7 +777,7 @@
 		};
 		48E29FE693B4811505754824 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = "TEMP_88680B79-8D5D-490A-ABEE-8C21E807B5B2" /* signing.local.xcconfig */;
+			baseConfigurationReference = "TEMP_F5DDAF0D-C5DA-4732-B335-1CB033B4A2BD" /* signing.local.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;

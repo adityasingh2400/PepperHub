@@ -7,6 +7,7 @@ struct PeptideApp: App {
     @StateObject private var purchasesManager = PurchasesManager.shared
     @StateObject private var appState = AppState()
     @StateObject private var pepperService = PepperService()
+    @StateObject private var spotlight = PepperSpotlight()
 
     let modelContainer: ModelContainer
 
@@ -57,6 +58,7 @@ struct PeptideApp: App {
             .environmentObject(purchasesManager)
             .environmentObject(appState)
             .environmentObject(pepperService)
+            .environmentObject(spotlight)
             .modelContainer(modelContainer)
             .preferredColorScheme(darkModeEnabled ? .dark : .light)
             .task {

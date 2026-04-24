@@ -1,4 +1,5 @@
 import SwiftUI
+import SwiftData
 
 /// Floating overlay that lets the user say "open BPC" / "go to today" /
 /// "calculate dose for tirzepatide" and have the app navigate instantly.
@@ -11,13 +12,20 @@ import SwiftUI
 ///     confirmation finishes.
 struct VoiceNavigatorView: View {
     @EnvironmentObject private var nav: NavigationCoordinator
+    @EnvironmentObject private var authManager: AuthManager
+    @EnvironmentObject private var pepperService: PepperService
+    @Environment(\.modelContext) private var modelContext
     @StateObject private var voice = VoiceRecognitionService()
     @ObservedObject private var tts = ElevenLabsTTSService.shared
 
     @Environment(\.dismiss) private var dismiss
-    @State private var lastIntent: VoiceIntent?
     @State private var ringPulse = false
     @State private var ttsId = UUID()
+    @State private var sentMessageCount = 0
+    @State private var spokenMessageIndex: Int? = nil
+    @State private var phase: Phase = .listening
+
+    enum Phase { case listening, thinking, speaking }
 
     var body: some View {
         ZStack {
@@ -59,6 +67,7 @@ struct VoiceNavigatorView: View {
             }
         }
         .task {
+            sentMessageCount = pepperService.messages.count
             await voice.start(contextualStrings: navigationVocabulary())
             ringPulse = true
         }
@@ -66,8 +75,16 @@ struct VoiceNavigatorView: View {
             voice.stop()
             tts.stop()
         }
-        .onChange(of: voice.transcript) { _, newValue in
-            handleTranscript(newValue)
+        .onChange(of: pepperService.messages.count) { _, _ in
+            speakLatestAssistantIfNeeded()
+        }
+        .onChange(of: pepperService.messages.last?.text ?? "") { _, _ in
+            speakLatestAssistantIfNeeded()
+        }
+        .onChange(of: tts.playingId) { old, new in
+            if old != nil && new == nil && phase == .speaking {
+                dismiss()
+            }
         }
     }
 
@@ -167,86 +184,60 @@ struct VoiceNavigatorView: View {
                 .font(.system(size: 32, weight: .bold))
                 .foregroundColor(.white)
         }
-    }
-
-    private var headline: String {
-        if tts.playingId != nil { return "On it." }
-        if voice.isListening { return voice.transcript.isEmpty ? "I'm listening." : "Got it." }
-        if let msg = voice.state.errorMessage { return msg }
-        return "Tap the mic and tell me where to go."
-    }
-
-    private var intentBadge: String? {
-        guard let intent = lastIntent else { return nil }
-        switch intent {
-        case .openTab(let tab):                   return "→ \(tab.title)"
-        case .openCompound(let c):                return "→ \(c.name)"
-        case .openDosingCalculator(let c):        return "→ Calculator · \(c.name)"
-        case .openPinningProtocol(let c):         return "→ Pinning · \(c.name)"
-        case .logDose:                            return "→ Quick-log dose"
-        case .askPepper:                          return "→ Ask Pepper"
-        case .unknown:                            return nil
-        }
-    }
-
-    // MARK: - Transcript handler
-
-    private func handleTranscript(_ transcript: String) {
-        let intent = VoiceIntent.detect(in: transcript)
-        // Don't keep firing on the same intent
-        if intent == lastIntent { return }
-
-        switch intent {
-        case .unknown:
-            return
-        default:
-            break
-        }
-
-        lastIntent = intent
-        voice.stop()
-        ttsId = UUID()
-        tts.toggle(intent.spokenConfirmation, id: ttsId)
-
-        // Slight delay so the user sees confirmation, then route + dismiss.
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.35) {
-            execute(intent)
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.85) {
+        .contentShape(Circle())
+        .onTapGesture {
+            UIImpactFeedbackGenerator(style: .medium).impactOccurred()
+            if phase == .listening {
+                submitTranscript()
+            } else {
+                tts.stop()
                 dismiss()
             }
         }
     }
 
-    private func execute(_ intent: VoiceIntent) {
-        switch intent {
-        case .openTab(let tab):
-            nav.switchTab(tab)
-        case .openCompound(let compound):
-            nav.openCompound(compound)
-        case .openDosingCalculator(let compound):
-            nav.openCompound(compound)
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
-                nav.presentDosingCalculator(for: compound)
-            }
-        case .openPinningProtocol(let compound):
-            nav.openCompound(compound)
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
-                nav.presentPinningProtocol(for: compound)
-            }
-        case .logDose:
-            nav.presentQuickDoseLog()
-        case .askPepper(let prompt):
-            nav.presentPepper()
-            // Drop the prompt into AskPepper via NotificationCenter so the
-            // existing assistant view can pick it up.
-            NotificationCenter.default.post(
-                name: .pepperSeedPrompt,
-                object: nil,
-                userInfo: ["prompt": prompt]
-            )
-        case .unknown:
-            break
+    private var headline: String {
+        switch phase {
+        case .listening:
+            if voice.isListening { return voice.transcript.isEmpty ? "I'm listening." : "Got it." }
+            if let msg = voice.state.errorMessage { return msg }
+            return "Tap the mic and talk."
+        case .thinking: return "Thinking..."
+        case .speaking: return "On it."
         }
+    }
+
+    private var intentBadge: String? { nil }
+
+    // MARK: - Submit transcript
+
+    /// Called when the user taps the mic to stop — sends transcript to Pepper.
+    private func submitTranscript() {
+        let trimmed = voice.transcript.trimmingCharacters(in: .whitespacesAndNewlines)
+        voice.stop()
+        guard !trimmed.isEmpty else { dismiss(); return }
+        guard let userId = authManager.session?.user.id.uuidString else { dismiss(); return }
+        phase = .thinking
+        sentMessageCount = pepperService.messages.count + 1  // user message will be appended
+        Task {
+            await pepperService.send(userMessage: trimmed, modelContext: modelContext, userId: userId)
+        }
+    }
+
+    /// Speak the latest assistant reply (once, when streaming finishes) and
+    /// auto-dismiss when the TTS finishes playing.
+    private func speakLatestAssistantIfNeeded() {
+        guard phase != .speaking else { return }
+        guard !pepperService.isStreaming else { return }
+        // Find latest assistant (non-user) message with text after our submit
+        guard let lastIdx = pepperService.messages.indices.last else { return }
+        let last = pepperService.messages[lastIdx]
+        guard !last.isUser, !last.text.isEmpty else { return }
+        guard spokenMessageIndex != lastIdx else { return }
+        spokenMessageIndex = lastIdx
+        phase = .speaking
+        ttsId = UUID()
+        tts.toggle(last.text, id: ttsId)
     }
 
     private func navigationVocabulary() -> [String] {

@@ -113,12 +113,34 @@ struct PepperContextBuilder {
             parts.append("## Exercise Logs (last 7 days)\n\(exLines)")
         }
 
+        // Navigation anchors currently registered in the UI. Only spotlight IDs
+        // that appear in this list — unknown IDs will silently no-op.
+        let compoundSlugs: [String] = {
+            guard let active = protocols.first(where: { $0.isActive }) else { return [] }
+            return active.compounds.map { c in
+                c.compoundName.lowercased()
+                    .replacingOccurrences(of: " ", with: "-")
+                    .replacingOccurrences(of: "_", with: "-")
+            }
+        }()
+        let perCompoundAnchors = compoundSlugs.flatMap { slug in
+            ["protocol.compound.\(slug)", "protocol.compound.\(slug).dose"]
+        }
+        let allAnchors = ["today.macros", "today.schedule"] + perCompoundAnchors
         parts.append("""
         ## Tool Use Guidelines
         - For write tools (log_food_entry, log_dose, log_exercise_set, log_side_effect): always call the tool, the user will confirm before it's saved.
         - For search_food: call it automatically when you need accurate nutrition data, no confirmation needed.
         - When the user says "log X", use the appropriate tool. Don't ask for confirmation in your text response — the app will show a confirmation card.
         - After a tool is confirmed, acknowledge briefly and move on.
+
+        ## Navigation + Spotlight
+        - When the user asks to see something, navigate first with navigate_to_tab / open_compound / open_dosing_calculator / open_pinning_protocol. These take effect instantly.
+        - After navigating, call spotlight_element with the anchor ID to draw a ring around the specific thing they asked about.
+        - Keep spoken replies short (one sentence). The app is doing the navigation — you're just narrating.
+
+        ## Registered anchor IDs (spotlight_element only works with these):
+        \(allAnchors.map { "- \($0)" }.joined(separator: "\n"))
         """)
 
         return parts.joined(separator: "\n\n")

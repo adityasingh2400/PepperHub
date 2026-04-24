@@ -1,7 +1,7 @@
-import AVFoundation
+@preconcurrency import AVFoundation
 import Foundation
 import OSLog
-import Speech
+@preconcurrency import Speech
 
 /// Wraps SFSpeechRecognizer for live partial transcription with continuous
 /// listening — the session stays open until the user taps stop.

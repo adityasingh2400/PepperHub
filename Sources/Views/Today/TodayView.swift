@@ -100,6 +100,7 @@ struct TodayView: View {
                             targetFat: profile.macroGoalFatG,
                             caloriesBurned: todayCaloriesBurned
                         )
+                        .pepperAnchor("today.macros")
                     }
 
                     // 4. Today's meals
@@ -113,6 +114,7 @@ struct TodayView: View {
                             compounds: proto.compounds,
                             loggedDoses: recentDoses
                         )
+                        .pepperAnchor("today.schedule")
                     }
 
                     // 5b. Active compound timelines (where you are on the PK curve right now)

@@ -39,6 +39,16 @@ struct PepperToolCall: Identifiable, Sendable {
             return "Log side effect: \(i.symptom) (\(i.severity)/10 severity)"
         case .createWorkoutRoutine(let i):
             return "Create routine \"\(i.routineName)\" — \(i.exercises.count) exercise\(i.exercises.count == 1 ? "" : "s")"
+        case .navigateTab(let i):
+            return "Open \(i.tab) tab"
+        case .openCompound(let i):
+            return "Open \(i.compoundName)"
+        case .openDosingCalc(let i):
+            return "Open dosing calculator for \(i.compoundName)"
+        case .openPinningProto(let i):
+            return "Open pinning protocol for \(i.compoundName)"
+        case .spotlight(let i):
+            return "Highlight \(i.anchorId)"
         }
     }
 }
@@ -52,6 +62,23 @@ enum PepperToolInput: Sendable {
     case logExerciseSet(LogExerciseSetInput)
     case logSideEffect(LogSideEffectInput)
     case createWorkoutRoutine(CreateWorkoutRoutineInput)
+    case navigateTab(NavigateTabInput)
+    case openCompound(OpenCompoundInput)
+    case openDosingCalc(OpenCompoundInput)
+    case openPinningProto(OpenCompoundInput)
+    case spotlight(SpotlightInput)
+}
+
+struct NavigateTabInput: Codable, Sendable {
+    let tab: String  // "today" | "food" | "protocol" | "track" | "research"
+}
+
+struct OpenCompoundInput: Codable, Sendable {
+    let compoundName: String
+}
+
+struct SpotlightInput: Codable, Sendable {
+    let anchorId: String
 }
 
 struct LogFoodInput: Codable, Sendable {
@@ -247,6 +274,61 @@ nonisolated(unsafe) let pepperToolDefinitions: [[String: Any]] = [
                 ]
             ],
             "required": ["routineName", "exercises"]
+        ]
+    ],
+    [
+        "name": "navigate_to_tab",
+        "description": "Switch the user to a tab in the app. Use when the user asks to see a section by name.",
+        "input_schema": [
+            "type": "object",
+            "properties": [
+                "tab": ["type": "string", "enum": ["today", "food", "protocol", "track", "research"], "description": "Which tab to open"]
+            ],
+            "required": ["tab"]
+        ]
+    ],
+    [
+        "name": "open_compound",
+        "description": "Open a specific peptide/compound detail view. Use when the user mentions a compound by name.",
+        "input_schema": [
+            "type": "object",
+            "properties": [
+                "compoundName": ["type": "string", "description": "Compound name (canonical or alias), e.g. 'BPC-157', 'Tirzepatide', 'MOTS-C'"]
+            ],
+            "required": ["compoundName"]
+        ]
+    ],
+    [
+        "name": "open_dosing_calculator",
+        "description": "Open the dosing calculator for a compound. Use when the user asks how much to take, or for a dose calculation.",
+        "input_schema": [
+            "type": "object",
+            "properties": [
+                "compoundName": ["type": "string", "description": "Compound name"]
+            ],
+            "required": ["compoundName"]
+        ]
+    ],
+    [
+        "name": "open_pinning_protocol",
+        "description": "Open the pinning / injection site protocol for a compound. Use when the user asks how or where to inject.",
+        "input_schema": [
+            "type": "object",
+            "properties": [
+                "compoundName": ["type": "string", "description": "Compound name"]
+            ],
+            "required": ["compoundName"]
+        ]
+    ],
+    [
+        "name": "spotlight_element",
+        "description": "Draw a pulsating highlight ring around a specific element on the current screen to point the user's attention at it. Use AFTER navigating to the relevant page. Only use anchor IDs that have been registered in the app.",
+        "input_schema": [
+            "type": "object",
+            "properties": [
+                "anchorId": ["type": "string", "description": "Anchor ID of the element to highlight"]
+            ],
+            "required": ["anchorId"]
         ]
     ]
 ]

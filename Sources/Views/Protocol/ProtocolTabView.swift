@@ -387,6 +387,12 @@ struct CompoundRow: View {
         CompoundCatalog.compound(named: compound.compoundName)
     }
 
+    private var anchorSlug: String {
+        compound.compoundName.lowercased()
+            .replacingOccurrences(of: " ", with: "-")
+            .replacingOccurrences(of: "_", with: "-")
+    }
+
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
             HStack(spacing: 12) {
@@ -398,6 +404,7 @@ struct CompoundRow: View {
                         Text("\(Int(compound.doseMcg)) mcg")
                             .font(.system(size: 12))
                             .foregroundColor(Color.appTextTertiary)
+                            .pepperAnchor("protocol.compound.\(anchorSlug).dose")
                         Text("·")
                             .foregroundColor(Color.appTextMeta)
                         Text(frequencyLabel(compound.frequency))
@@ -429,6 +436,7 @@ struct CompoundRow: View {
         }
         .padding(.horizontal, 16)
         .padding(.vertical, 12)
+        .pepperAnchor("protocol.compound.\(anchorSlug)")
     }
 
     private func frequencyLabel(_ freq: String) -> String {

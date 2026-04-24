@@ -7,6 +7,11 @@ final class PepperService: ObservableObject {
     @Published var isStreaming = false
     @Published var pendingToolCall: PepperToolCall? = nil
 
+    /// Wired by `MainTabView` on appear so nav/spotlight tools can actually
+    /// drive the UI. Weak refs to avoid retain cycles with the env objects.
+    weak var navigation: NavigationCoordinator?
+    weak var spotlight: PepperSpotlight?
+
     private var apiHistory: [PepperHistoryContent] = []
     private let maxLogicalTurns = 10
 
@@ -175,7 +180,12 @@ final class PepperService: ObservableObject {
                     return
                 }
 
-                let isReadOnly = toolBlock.toolName == "search_food"
+                let readOnlyTools: Set<String> = [
+                    "search_food",
+                    "navigate_to_tab", "open_compound", "open_dosing_calculator",
+                    "open_pinning_protocol", "spotlight_element"
+                ]
+                let isReadOnly = readOnlyTools.contains(toolBlock.toolName)
                 let toolCall = PepperToolCall(
                     toolUseId: toolBlock.toolUseId,
                     toolName: toolBlock.toolName,
@@ -252,7 +262,78 @@ final class PepperService: ObservableObject {
             return try logSideEffect(input, modelContext: modelContext, userId: userId)
         case .createWorkoutRoutine(let input):
             return try createWorkoutRoutine(input, modelContext: modelContext, userId: userId)
+        case .navigateTab(let input):
+            return navigateTab(input)
+        case .openCompound(let input):
+            return openCompound(input)
+        case .openDosingCalc(let input):
+            return openDosingCalc(input)
+        case .openPinningProto(let input):
+            return openPinningProto(input)
+        case .spotlight(let input):
+            return spotlightElement(input)
         }
+    }
+
+    // MARK: - Navigation tool handlers
+
+    private func navigateTab(_ input: NavigateTabInput) -> String {
+        guard let nav = navigation else { return "Navigation unavailable" }
+        let tab: NavigationCoordinator.Tab? = {
+            switch input.tab.lowercased() {
+            case "today": return .today
+            case "food": return .food
+            case "protocol": return .protocol
+            case "track": return .track
+            case "research": return .research
+            default: return nil
+            }
+        }()
+        guard let t = tab else { return "Unknown tab: \(input.tab)" }
+        nav.switchTab(t)
+        return "Opened \(input.tab) tab"
+    }
+
+    private func openCompound(_ input: OpenCompoundInput) -> String {
+        guard let nav = navigation else { return "Navigation unavailable" }
+        guard let compound = CompoundCatalog.compound(named: input.compoundName)
+            ?? CompoundCatalog.match(in: input.compoundName).first.flatMap({ CompoundCatalog.compound(named: $0) }) else {
+            return "Couldn't find compound: \(input.compoundName)"
+        }
+        nav.openCompound(compound)
+        return "Opened \(compound.name)"
+    }
+
+    private func openDosingCalc(_ input: OpenCompoundInput) -> String {
+        guard let nav = navigation else { return "Navigation unavailable" }
+        guard let compound = CompoundCatalog.compound(named: input.compoundName)
+            ?? CompoundCatalog.match(in: input.compoundName).first.flatMap({ CompoundCatalog.compound(named: $0) }) else {
+            return "Couldn't find compound: \(input.compoundName)"
+        }
+        nav.openCompound(compound)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
+            nav.presentDosingCalculator(for: compound)
+        }
+        return "Opened dosing calculator for \(compound.name)"
+    }
+
+    private func openPinningProto(_ input: OpenCompoundInput) -> String {
+        guard let nav = navigation else { return "Navigation unavailable" }
+        guard let compound = CompoundCatalog.compound(named: input.compoundName)
+            ?? CompoundCatalog.match(in: input.compoundName).first.flatMap({ CompoundCatalog.compound(named: $0) }) else {
+            return "Couldn't find compound: \(input.compoundName)"
+        }
+        nav.openCompound(compound)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
+            nav.presentPinningProtocol(for: compound)
+        }
+        return "Opened pinning protocol for \(compound.name)"
+    }
+
+    private func spotlightElement(_ input: SpotlightInput) -> String {
+        guard let spotlight = spotlight else { return "Spotlight unavailable" }
+        spotlight.highlight(input.anchorId)
+        return "Highlighted \(input.anchorId)"
     }
 
     private func logFood(_ input: LogFoodInput, modelContext: ModelContext, userId: String) throws -> String {
@@ -404,6 +485,21 @@ final class PepperService: ObservableObject {
         case "create_workout_routine":
             guard let input = try? decoder.decode(CreateWorkoutRoutineInput.self, from: data) else { return nil }
             return .createWorkoutRoutine(input)
+        case "navigate_to_tab":
+            guard let input = try? decoder.decode(NavigateTabInput.self, from: data) else { return nil }
+            return .navigateTab(input)
+        case "open_compound":
+            guard let input = try? decoder.decode(OpenCompoundInput.self, from: data) else { return nil }
+            return .openCompound(input)
+        case "open_dosing_calculator":
+            guard let input = try? decoder.decode(OpenCompoundInput.self, from: data) else { return nil }
+            return .openDosingCalc(input)
+        case "open_pinning_protocol":
+            guard let input = try? decoder.decode(OpenCompoundInput.self, from: data) else { return nil }
+            return .openPinningProto(input)
+        case "spotlight_element":
+            guard let input = try? decoder.decode(SpotlightInput.self, from: data) else { return nil }
+            return .spotlight(input)
         default:
             return nil
         }
