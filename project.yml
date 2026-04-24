@@ -64,6 +64,7 @@ targets:
         product: Lottie
       - package: PostHog
         product: PostHog
+      - sdk: AppIntents.framework
     scheme:
       testTargets:
         - PeptideTests

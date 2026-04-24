@@ -12,6 +12,7 @@
 		0C8A239A8443142568C3E911 /* PepperService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DC9DAA4ACFF3CB8267F8DB7 /* PepperService.swift */; };
 		1A91E7BBEB1A2DE59A7E5808 /* PeptideTimeline.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79AE3A764B3513CBBD071C8A /* PeptideTimeline.swift */; };
 		21703A41D75774EE32171604 /* RevenueCat in Frameworks */ = {isa = PBXBuildFile; productRef = 3747C358D2AD7863132D77FB /* RevenueCat */; };
+		D0A5C0DE0000000000000002 /* AppIntents.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0A5C0DE0000000000000001 /* AppIntents.framework */; };
 		249E7E3126D337ED75D62678 /* SyringeMathTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D748DD8878D375FCD0A9963 /* SyringeMathTests.swift */; };
 		24C1681AC17DA31FA4D105D8 /* NavigationCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83EF1C2877E8A8C14B12F176 /* NavigationCoordinator.swift */; };
 		27581A45ECFCBC818FBDEAEA /* TrackTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E316347F2770670754F356D8 /* TrackTabView.swift */; };
@@ -178,6 +179,7 @@
 		D1632C678078BEB0665AA2ED /* StackParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StackParser.swift; sourceTree = "<group>"; };
 		D2EE90CF0787BD8DC1D4F59A /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		DC1B9C8E49674E37ABCC1461 /* Peptide.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = Peptide.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		D0A5C0DE0000000000000001 /* AppIntents.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppIntents.framework; path = System/Library/Frameworks/AppIntents.framework; sourceTree = SDKROOT; };
 		DDCF3995C18E09C086B31D0D /* TodayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayView.swift; sourceTree = "<group>"; };
 		DFD346FCAF6AADDF330F4A97 /* APIKeys.swift.example */ = {isa = PBXFileReference; path = APIKeys.swift.example; sourceTree = "<group>"; };
 		E292BDD27FAC49022F969563 /* SyringeMath.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyringeMath.swift; sourceTree = "<group>"; };
@@ -197,6 +199,7 @@
 				341ED8BBA7662ED854D24444 /* RevenueCatUI in Frameworks */,
 				36496D06831957F73E0BCBF9 /* Lottie in Frameworks */,
 				EA130F1EF1600AD22B036522 /* PostHog in Frameworks */,
+				D0A5C0DE0000000000000002 /* AppIntents.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -260,6 +263,7 @@
 				1D231F32BA9B4E51EAB32127 /* Supporting */,
 				F7ADA2DC7C739EF2E4C977C5 /* Tests */,
 				80E5D28D6E7152E2D376F84D /* Products */,
+				D0A5C0DE0000000000000003 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -395,6 +399,14 @@
 				2F85AE984B455CD7B3002A97 /* OnboardingTrialView.swift */,
 			);
 			path = Onboarding;
+			sourceTree = "<group>";
+		};
+		D0A5C0DE0000000000000003 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				D0A5C0DE0000000000000001 /* AppIntents.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 		D949030410B93D98703031F5 /* Paywall */ = {

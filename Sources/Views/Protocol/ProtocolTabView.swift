@@ -700,7 +700,7 @@ struct TimePickerSheet: View {
         self._time = State(initialValue: time)
         self.onDone = onDone
         let parts = time.split(separator: ":").compactMap { Int($0) }
-        var cal = Calendar.current
+        let cal = Calendar.current
         var comps = cal.dateComponents([.year, .month, .day], from: Date())
         comps.hour = parts.first ?? 8
         comps.minute = parts.last ?? 0
