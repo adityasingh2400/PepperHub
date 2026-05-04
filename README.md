@@ -94,8 +94,9 @@ xcodebuild -scheme Peptide -destination 'platform=iOS Simulator,name=iPhone 17 P
 
 ## Configuration & secrets
 
-- **Supabase**, **RevenueCat**, and other keys: use your own `APIKeys` / xcconfig pattern; do not commit real secrets.
-- **ElevenLabs** (optional TTS for voice navigator): configure in the same way the project expects for your environment.
+- **Supabase (required for sign-in / sync):** copy `Sources/Supporting/APIKeys.swift.example` → `APIKeys.swift` and set **`supabaseURL`** (Project URL) and **`supabaseAnonKey`** (anon public key) from [Supabase Dashboard](https://supabase.com/dashboard) → *Project Settings* → *API*. Both must come from the **same** project; the URL must resolve in a browser (`https://<ref>.supabase.co`).
+- **Anthropic / ElevenLabs:** same `APIKeys.swift` file — see the example. Do not commit real secrets.
+- **RevenueCat** and other keys: follow your usual pattern; do not commit production secrets.
 
 ---
 

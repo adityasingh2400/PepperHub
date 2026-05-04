@@ -38,6 +38,8 @@ targets:
   Peptide:
     type: application
     platform: iOS
+    entitlements:
+      path: Supporting/Pepper.entitlements
     sources:
       - path: Sources
       - path: Resources
@@ -45,6 +47,11 @@ targets:
     info:
       path: Supporting/Info.plist
       properties:
+        CFBundleURLTypes:
+          - CFBundleTypeRole: Editor
+            CFBundleURLName: Pepper Auth
+            CFBundleURLSchemes:
+              - pepper
         UILaunchScreen: {}
         UISupportedInterfaceOrientations:
           - UIInterfaceOrientationPortrait

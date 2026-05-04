@@ -5,7 +5,7 @@
 //   bun scripts/seed_compound_metadata.ts --apply          # write to Supabase
 //
 // Env vars required for --apply:
-//   SUPABASE_URL              e.g. https://sgbszuimvqxzqvmgvyrn.supabase.co
+//   SUPABASE_URL              e.g. https://<your-project-ref>.supabase.co
 //   SUPABASE_SERVICE_ROLE_KEY service role key (NOT the anon key)
 //
 // What it does:

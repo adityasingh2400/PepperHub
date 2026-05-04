@@ -19,7 +19,7 @@
 **What:** Replace xcconfig Claude API key with a Supabase Edge Function that proxies POST /v1/messages.
 **Why:** API key embedded in the app binary is extractable. Required before App Store submission.
 **How to apply:** Create `supabase/functions/pepper-proxy/index.ts`. iOS calls Supabase function URL with Bearer session token. Function validates Supabase auth, forwards request to Anthropic, returns response. Rate limit per userId.
-**Depends on:** Nothing — Supabase already configured at sgbszuimvqxzqvmgvyrn.supabase.co
+**Depends on:** Supabase project URL + anon key in `APIKeys.swift` (see `APIKeys.swift.example`).
 **Blocked by:** None. Can be done in parallel with Pepper feature work.
 
 ## Pepper: create_workout_routine Tool (Phase 2)

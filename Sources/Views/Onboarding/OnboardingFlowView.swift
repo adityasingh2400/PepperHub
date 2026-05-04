@@ -4,7 +4,7 @@ import SwiftUI
 
 @MainActor
 final class OnboardingViewModel: ObservableObject {
-    @Published var step = 1  // 1-12 (peptide goals → fitness → stats → protocol → numbers → trial)
+    @Published var step = 1  // 1–12: questions; 13: trial / finish (see `stepContent` default branch)
 
     // Step 1 — Goal
     @Published var goal: Goal = .recomp
@@ -99,7 +99,7 @@ final class OnboardingViewModel: ObservableObject {
         defer { isLoadingPlan = false }
 
         do {
-            guard let url = URL(string: "https://sgbszuimvqxzqvmgvyrn.supabase.co/functions/v1/nutrition-plan") else { return }
+            let url = SupabaseConfiguration.edgeFunctionURL(name: "nutrition-plan")
 
             guard let session = try? await supabase.auth.session else { return }
 
@@ -367,7 +367,10 @@ struct OnboardingFlowView: View {
             Analytics.capture(.onboardingStarted)
         }
         .onChange(of: vm.step) { _, newStep in
-            Analytics.capture(.onboardingStepCompleted, properties: ["step": newStep - 1, "total_steps": 12])
+            Analytics.capture(
+                .onboardingStepCompleted,
+                properties: ["step": newStep - 1, "total_steps": 13]
+            )
         }
     }
 
@@ -393,15 +396,16 @@ struct OnboardingFlowView: View {
             .padding(.horizontal, 16)
             .padding(.top, 8)
 
-            // Progress bar (12 steps total, peptide goals first)
+            // Progress: 12 questionnaire steps fill the bar; trial (step 13) stays at 100%.
             GeometryReader { geo in
+                let filled = min(1, max(0, CGFloat(vm.step - 1) / 11))
                 ZStack(alignment: .leading) {
                     Capsule()
                         .fill(Color.appBorder)
                         .frame(height: 3)
                     Capsule()
                         .fill(Color.appAccent)
-                        .frame(width: geo.size.width * CGFloat(vm.step - 1) / 11.0, height: 3)
+                        .frame(width: geo.size.width * filled, height: 3)
                         .animation(.easeInOut(duration: 0.3), value: vm.step)
                 }
             }

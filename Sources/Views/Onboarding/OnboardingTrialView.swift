@@ -31,7 +31,7 @@ struct OnboardingTrialView: View {
                         .foregroundColor(Color.appTextPrimary)
                         .multilineTextAlignment(.center)
 
-                    Text("Full Partition Plan meal windows, timing nudges, unlimited food history, and vial inventory.")
+                    Text("Full Partition Plan: meal windows, timing nudges, unlimited food history, and vial inventory.")
                         .font(.system(size: 14))
                         .foregroundColor(Color.appTextTertiary)
                         .multilineTextAlignment(.center)
@@ -116,7 +116,7 @@ struct OnboardingTrialView: View {
     }
 
     private func saveProfileAndEnter() async {
-        guard let userId = authManager.session?.user.id else { return }
+        guard let userId = authManager.activeUserId else { return }
 
         struct ProfileUpsert: Encodable {
             let user_id: String

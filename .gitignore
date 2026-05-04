@@ -26,6 +26,7 @@ signing.local.xcconfig
 
 # Supabase
 supabase/.env
+supabase/.temp/
 
 # gstack internal
 .gstack/

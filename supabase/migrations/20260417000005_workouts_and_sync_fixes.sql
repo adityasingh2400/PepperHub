@@ -12,11 +12,13 @@ ALTER TABLE workouts ENABLE ROW LEVEL SECURITY;
 CREATE POLICY "Users manage own workouts" ON workouts FOR ALL USING (auth.uid() = user_id);
 
 -- Fix protocol_compounds.dose_times: time[] → jsonb (client stores JSON arrays)
+-- Drop default first: Postgres cannot auto-cast time[] default to jsonb.
+ALTER TABLE protocol_compounds ALTER COLUMN dose_times DROP DEFAULT;
 ALTER TABLE protocol_compounds
     ALTER COLUMN dose_times TYPE jsonb
     USING '[]'::jsonb;
 ALTER TABLE protocol_compounds
-    ALTER COLUMN dose_times SET DEFAULT '[]';
+    ALTER COLUMN dose_times SET DEFAULT '[]'::jsonb;
 
 -- Fix goal constraint to include anti_aging
 ALTER TABLE users_profiles DROP CONSTRAINT IF EXISTS users_profiles_goal_check;

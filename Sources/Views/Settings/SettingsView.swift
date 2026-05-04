@@ -163,10 +163,7 @@ struct SettingsView: View {
                     isDeletingAccount = false
                     return
                 }
-                guard let url = URL(string: "https://sgbszuimvqxzqvmgvyrn.supabase.co/functions/v1/delete-user") else {
-                    isDeletingAccount = false
-                    return
-                }
+                let url = SupabaseConfiguration.edgeFunctionURL(name: "delete-user")
                 var req = URLRequest(url: url)
                 req.httpMethod = "POST"
                 req.setValue("Bearer \(session.accessToken)", forHTTPHeaderField: "Authorization")

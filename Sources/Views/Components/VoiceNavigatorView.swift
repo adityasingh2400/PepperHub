@@ -979,9 +979,7 @@ struct FloatingMicButton: View {
                     .overlay(
                         Circle().stroke(Color.appBorder.opacity(0.8), lineWidth: 0.5)
                     )
-                Image(systemName: "mic.fill")
-                    .font(.system(size: 16, weight: .bold))
-                    .foregroundColor(Color.appAccent)
+                PepperMarkView(size: 16, color: Color(hex: "9f1239"))
             }
             .scaleEffect(pressed ? 0.9 : 1.0)
         }

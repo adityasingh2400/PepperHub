@@ -1,5 +1,6 @@
 import SwiftUI
 import SwiftData
+import Supabase
 
 @main
 struct PeptideApp: App {
@@ -61,8 +62,11 @@ struct PeptideApp: App {
             .environmentObject(spotlight)
             .modelContainer(modelContainer)
             .preferredColorScheme(darkModeEnabled ? .dark : .light)
-            .task {
-                if let userId = authManager.session?.user.id.uuidString {
+            .onOpenURL { url in
+                supabase.handle(url)
+            }
+            .task(id: authManager.activeUserId?.uuidString) {
+                if let userId = authManager.activeUserId?.uuidString {
                     await purchasesManager.logIn(userId: userId)
                     Analytics.identify(userId: userId)
                 }

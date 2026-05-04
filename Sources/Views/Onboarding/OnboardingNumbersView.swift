@@ -1,7 +1,7 @@
 import SwiftUI
 
 // Legacy view — kept for potential direct reference from other parts of the app.
-// The new onboarding flow uses Step13NumbersView inside OnboardingFlowView.swift.
+// The new onboarding flow uses `Step11NumbersView` inside OnboardingFlowView.swift.
 struct OnboardingNumbersView: View {
     @ObservedObject var vm: OnboardingViewModel
 

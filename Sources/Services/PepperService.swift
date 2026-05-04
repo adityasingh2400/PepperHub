@@ -85,7 +85,7 @@ final class PepperService: ObservableObject {
                 return
             }
 
-            guard let url = URL(string: "https://sgbszuimvqxzqvmgvyrn.supabase.co/functions/v1/pepper-chat") else { return }
+            let url = SupabaseConfiguration.edgeFunctionURL(name: "pepper-chat")
             var request = URLRequest(url: url)
             request.httpMethod = "POST"
             request.setValue("application/json", forHTTPHeaderField: "Content-Type")

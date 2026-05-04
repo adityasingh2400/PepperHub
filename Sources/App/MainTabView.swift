@@ -38,8 +38,8 @@ struct MainTabView: View {
                     .tag(NavigationCoordinator.Tab.research)
             }
             .tint(Color(hex: "9f1239"))
-            .task(id: authManager.session?.user.id) {
-                guard let userId = authManager.session?.user.id.uuidString else { return }
+            .task(id: authManager.activeUserId?.uuidString) {
+                guard let userId = authManager.activeUserId?.uuidString else { return }
                 await SyncService.shared.bootstrap(userId: userId, context: ctx)
             }
             .onAppear {
@@ -124,12 +124,7 @@ private struct PepperBubbleButton: View {
                 .scaleEffect(pressed ? 0.91 : 1.0)
                 .animation(.spring(response: 0.25, dampingFraction: 0.55), value: pressed)
 
-            Image("PepperLogo")
-                .resizable()
-                .renderingMode(.template)
-                .aspectRatio(contentMode: .fit)
-                .frame(width: 34, height: 34)
-                .foregroundColor(.white)
+            PepperMarkView(size: 24, color: .white)
                 .scaleEffect(pressed ? 0.91 : 1.0)
                 .animation(.spring(response: 0.25, dampingFraction: 0.55), value: pressed)
         }

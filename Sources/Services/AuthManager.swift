@@ -1,3 +1,4 @@
+import AuthenticationServices
 import Supabase
 import SwiftUI
 
@@ -10,6 +11,13 @@ final class AuthManager: ObservableObject {
 
     private var pendingSession: Session?
 
+    /// Supabase user id for the signed-in or just-signed-up user. Email sign-up stores
+    /// the session in `pendingSession` until onboarding completes, so prefer this over
+    /// `session?.user.id` anywhere that must work mid-onboarding (profile save, RevenueCat).
+    var activeUserId: UUID? {
+        session?.user.id ?? pendingSession?.user.id
+    }
+
     init() {
         Task { await restoreSession() }
         listenForAuthChanges()
@@ -18,11 +26,11 @@ final class AuthManager: ObservableObject {
     private func restoreSession() async {
         do {
             let s = try await supabase.auth.session
-            session = s
-            // Check if this logged-in user has ever completed onboarding
-            needsOnboarding = await !hasProfile(userId: s.user.id.uuidString)
+            await applySessionFromAuth(s)
         } catch {
             session = nil
+            pendingSession = nil
+            needsOnboarding = false
         }
         isLoading = false
     }
@@ -45,13 +53,35 @@ final class AuthManager: ObservableObject {
         }
     }
 
+    /// Single place that maps “Supabase has a session” → app routing state (profile vs onboarding).
+    private func applySessionFromAuth(_ s: Session) async {
+        let userId = s.user.id.uuidString
+        let has = await hasProfile(userId: userId)
+        if has {
+            pendingSession = nil
+            session = s
+            needsOnboarding = false
+        } else {
+            pendingSession = s
+            session = nil
+            needsOnboarding = true
+        }
+    }
+
     private func listenForAuthChanges() {
         Task {
             for await (event, s) in supabase.auth.authStateChanges {
+                guard let s else { continue }
                 switch event {
-                case .signedIn, .tokenRefreshed:
-                    if !needsOnboarding {
-                        self.session = s
+                case .signedIn:
+                    await applySessionFromAuth(s)
+                case .tokenRefreshed:
+                    if let pen = pendingSession, pen.user.id == s.user.id {
+                        pendingSession = s
+                    } else if let cur = session, cur.user.id == s.user.id {
+                        session = s
+                    } else {
+                        await applySessionFromAuth(s)
                     }
                 case .signedOut:
                     self.session = nil
@@ -64,15 +94,34 @@ final class AuthManager: ObservableObject {
         }
     }
 
-    func signUp(email: String, password: String, displayName: String) async throws {
+    static func displayNameFromEmail(_ email: String) -> String {
+        let local = email.split(separator: "@").first.map(String.init) ?? email
+        let cleaned = local.replacingOccurrences(of: ".", with: " ").replacingOccurrences(of: "_", with: " ").trimmingCharacters(in: .whitespaces)
+        if cleaned.isEmpty { return "User" }
+        return cleaned.capitalized
+    }
+
+    func signUp(email: String, password: String, displayName: String?) async throws {
+        let trimmed = displayName?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
+        let name = trimmed.isEmpty ? Self.displayNameFromEmail(email) : trimmed
         let response = try await supabase.auth.signUp(
             email: email,
             password: password,
-            data: ["display_name": .string(displayName)]
+            data: ["display_name": .string(name)]
         )
-        pendingSession = response.session
-        needsOnboarding = true
-        Analytics.capture(.signedUp, properties: ["method": "email"])
+        if let s = response.session {
+            await applySessionFromAuth(s)
+            Analytics.capture(.signedUp, properties: ["method": "email"])
+        } else {
+            pendingSession = nil
+            session = nil
+            needsOnboarding = false
+            throw NSError(
+                domain: "PepperAuth",
+                code: 1,
+                userInfo: [NSLocalizedDescriptionKey: "Check your email to confirm your account, then sign in."]
+            )
+        }
     }
 
     func completeOnboarding() {
@@ -83,9 +132,36 @@ final class AuthManager: ObservableObject {
     }
 
     func signIn(email: String, password: String) async throws {
-        let response = try await supabase.auth.signIn(email: email, password: password)
-        session = response
+        _ = try await supabase.auth.signIn(email: email, password: password)
+        let s = try await supabase.auth.session
+        await applySessionFromAuth(s)
         Analytics.capture(.signedIn, properties: ["method": "email"])
+    }
+
+    func signInWithApple(idToken: String, rawNonce: String) async throws {
+        let s = try await supabase.auth.signInWithIdToken(
+            credentials: OpenIDConnectCredentials(
+                provider: .apple,
+                idToken: idToken,
+                nonce: rawNonce
+            )
+        )
+        await applySessionFromAuth(s)
+        Analytics.capture(.signedIn, properties: ["method": "apple"])
+    }
+
+    func signInWithGoogle() async throws {
+        let s = try await supabase.auth.signInWithOAuth(
+            provider: .google,
+            redirectTo: SupabaseConfiguration.authRedirectURL,
+            scopes: "openid email profile"
+        ) { session in
+            #if !os(tvOS) && !os(watchOS)
+            session.prefersEphemeralWebBrowserSession = false
+            #endif
+        }
+        await applySessionFromAuth(s)
+        Analytics.capture(.signedIn, properties: ["method": "google"])
     }
 
     func signOut() async throws {

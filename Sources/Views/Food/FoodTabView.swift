@@ -1593,9 +1593,7 @@ enum PhotoMealAnalyzer {
             throw URLError(.cannotDecodeContentData)
         }
         let base64Image = imageData.base64EncodedString()
-        guard let url = URL(string: "https://sgbszuimvqxzqvmgvyrn.supabase.co/functions/v1/pepper-chat") else {
-            throw URLError(.badURL)
-        }
+        let url = SupabaseConfiguration.edgeFunctionURL(name: "pepper-chat")
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")

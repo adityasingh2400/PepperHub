@@ -1,20 +1,39 @@
-import SwiftUI
 import AuthenticationServices
+import SwiftUI
 
 struct OnboardingCreateAccountView: View {
     @EnvironmentObject private var authManager: AuthManager
 
-    @State private var displayName = ""
+    private static func friendlySignUpError(_ error: Error) -> String {
+        let ns = error as NSError
+        let message = error.localizedDescription
+        let lowercasedMessage = message.lowercased()
+        if lowercasedMessage.contains("unsupported provider") || lowercasedMessage.contains("provider is not enabled") {
+            return "Google and Apple sign-in are not enabled in Supabase yet. Enable both providers and add pepper://auth-callback under Authentication → URL Configuration."
+        }
+        if ns.domain == NSURLErrorDomain {
+            switch ns.code {
+            case NSURLErrorCannotFindHost, NSURLErrorDNSLookupFailed:
+                return "Can't reach Pepper's servers. In Xcode, set APIKeys.supabaseURL and APIKeys.supabaseAnonKey to your Supabase project (Dashboard → Settings → API), then rebuild."
+            case NSURLErrorNotConnectedToInternet:
+                return "You're offline. Connect to the internet and try again."
+            default:
+                break
+            }
+        }
+        return message
+    }
+
     @State private var email = ""
     @State private var password = ""
     @State private var isLoading = false
     @State private var errorMessage: String?
     @State private var showSignIn = false
+    @State private var rawAppleNonce: String?
 
     var body: some View {
         ScrollView {
             VStack(spacing: 0) {
-                // Header
                 VStack(spacing: 6) {
                     Text("Pepper")
                         .font(.system(size: 32, weight: .black))
@@ -24,36 +43,39 @@ struct OnboardingCreateAccountView: View {
                         .foregroundColor(Color.appTextTertiary)
                 }
                 .padding(.top, 56)
-                .padding(.bottom, 36)
+                .padding(.bottom, 32)
 
                 VStack(spacing: 12) {
-                    // Apple Sign-In (primary path)
-                    SignInWithAppleButton(.signUp) { request in
-                        request.requestedScopes = [.fullName, .email]
+                    SignInWithAppleButton(.signIn) { request in
+                        rawAppleNonce = AppleSignInNonce.attach(to: request)
                     } onCompletion: { result in
                         handleAppleSignIn(result)
                     }
                     .signInWithAppleButtonStyle(.black)
                     .frame(height: 52)
-                    .cornerRadius(14)
+                    .clipShape(Capsule())
+                    .disabled(isLoading)
+                    .opacity(isLoading ? 0.55 : 1)
 
-                    // Divider
+                    googleButton
+
                     HStack {
                         Rectangle().fill(Color.appBorder).frame(height: 1)
-                        Text("or").font(.system(size: 13)).foregroundColor(Color.appTextTertiary)
+                        Text("or")
+                            .font(.system(size: 13))
+                            .foregroundColor(Color.appTextTertiary)
                         Rectangle().fill(Color.appBorder).frame(height: 1)
                     }
                     .padding(.vertical, 4)
 
-                    // Email form
                     VStack(spacing: 10) {
-                        PTextField(placeholder: "Full name", text: $displayName)
                         PTextField(placeholder: "Email", text: $email)
                             .keyboardType(.emailAddress)
-                            .textContentType(.emailAddress)
+                            .textContentType(.username)
                             .autocorrectionDisabled()
                             .textInputAutocapitalization(.never)
                         PTextField(placeholder: "Password", text: $password, isSecure: true)
+                            .textContentType(.newPassword)
                     }
 
                     if let error = errorMessage {
@@ -63,12 +85,12 @@ struct OnboardingCreateAccountView: View {
                             .frame(maxWidth: .infinity, alignment: .leading)
                     }
 
-                    Button(action: signUp) {
+                    Button(action: signUpWithEmail) {
                         Group {
                             if isLoading {
                                 ProgressView().tint(.white)
                             } else {
-                                Text("Create Account")
+                                Text("Continue with email")
                                     .font(.system(size: 16, weight: .bold))
                             }
                         }
@@ -94,9 +116,6 @@ struct OnboardingCreateAccountView: View {
                         .padding(.top, 4)
 
                     #if DEBUG
-                    // Local-only bypass so we can iterate on the app without
-                    // round-tripping through Supabase auth on every reinstall.
-                    // Compiled out of release builds.
                     Button {
                         authManager.enableDebugPreviewMode()
                     } label: {
@@ -121,21 +140,69 @@ struct OnboardingCreateAccountView: View {
             }
         }
         .background(Color.appBackground.ignoresSafeArea())
+        .overlay {
+            if isLoading {
+                Color.black.opacity(0.25).ignoresSafeArea()
+                ProgressView()
+                    .scaleEffect(1.2)
+            }
+        }
         .sheet(isPresented: $showSignIn) {
             SignInView()
                 .environmentObject(authManager)
         }
     }
 
-    private func signUp() {
+    private var googleButton: some View {
+        Button {
+            signInWithGoogle()
+        } label: {
+            HStack(spacing: 12) {
+                GoogleGMark()
+                    .frame(width: 21, height: 21)
+                Text("Continue with Google")
+                    .font(.system(size: 16, weight: .semibold, design: .rounded))
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.9)
+            }
+            .frame(maxWidth: .infinity)
+            .frame(height: 52)
+            .background(.white)
+            .foregroundColor(Color.appTextPrimary)
+            .clipShape(Capsule())
+            .overlay(
+                Capsule()
+                    .stroke(Color.black.opacity(0.10), lineWidth: 1)
+            )
+            .shadow(color: Color.black.opacity(0.07), radius: 12, x: 0, y: 6)
+        }
+        .buttonStyle(.plain)
+        .disabled(isLoading)
+        .opacity(isLoading ? 0.55 : 1)
+    }
+
+    private func signUpWithEmail() {
         guard !email.isEmpty, !password.isEmpty else { return }
         isLoading = true
         errorMessage = nil
         Task {
             do {
-                try await authManager.signUp(email: email, password: password, displayName: displayName)
+                try await authManager.signUp(email: email, password: password, displayName: nil)
             } catch {
-                errorMessage = error.localizedDescription
+                errorMessage = Self.friendlySignUpError(error)
+            }
+            isLoading = false
+        }
+    }
+
+    private func signInWithGoogle() {
+        isLoading = true
+        errorMessage = nil
+        Task {
+            do {
+                try await authManager.signInWithGoogle()
+            } catch {
+                errorMessage = Self.friendlySignUpError(error)
             }
             isLoading = false
         }
@@ -143,14 +210,74 @@ struct OnboardingCreateAccountView: View {
 
     private func handleAppleSignIn(_ result: Result<ASAuthorization, Error>) {
         switch result {
-        case .success:
-            // Supabase Apple Sign-In handled via native flow
-            break
+        case .success(let authorization):
+            guard let apple = authorization.credential as? ASAuthorizationAppleIDCredential,
+                  let tokenData = apple.identityToken,
+                  let idToken = String(data: tokenData, encoding: .utf8),
+                  let nonce = rawAppleNonce
+            else {
+                errorMessage = "Could not read Sign in with Apple credentials."
+                rawAppleNonce = nil
+                return
+            }
+            rawAppleNonce = nil
+            isLoading = true
+            errorMessage = nil
+            Task {
+                do {
+                    try await authManager.signInWithApple(idToken: idToken, rawNonce: nonce)
+                } catch {
+                    errorMessage = Self.friendlySignUpError(error)
+                }
+                isLoading = false
+            }
         case .failure(let error):
+            rawAppleNonce = nil
             if (error as NSError).code != ASAuthorizationError.canceled.rawValue {
                 errorMessage = error.localizedDescription
             }
         }
+    }
+}
+
+private struct GoogleGMark: View {
+    var body: some View {
+        Canvas { context, size in
+            let lineWidth = size.width * 0.16
+            let inset = lineWidth / 2
+            let rect = CGRect(x: inset, y: inset, width: size.width - lineWidth, height: size.height - lineWidth)
+
+            drawArc(in: &context, rect: rect, start: .degrees(-42), end: .degrees(42), color: Color(red: 0.26, green: 0.52, blue: 0.96), width: lineWidth)
+            drawArc(in: &context, rect: rect, start: .degrees(42), end: .degrees(139), color: Color(red: 0.20, green: 0.66, blue: 0.33), width: lineWidth)
+            drawArc(in: &context, rect: rect, start: .degrees(139), end: .degrees(205), color: Color(red: 0.98, green: 0.74, blue: 0.18), width: lineWidth)
+            drawArc(in: &context, rect: rect, start: .degrees(205), end: .degrees(318), color: Color(red: 0.92, green: 0.26, blue: 0.21), width: lineWidth)
+
+            var bar = Path()
+            bar.move(to: CGPoint(x: size.width * 0.54, y: size.height * 0.50))
+            bar.addLine(to: CGPoint(x: size.width * 0.90, y: size.height * 0.50))
+            context.stroke(
+                bar,
+                with: .color(Color(red: 0.26, green: 0.52, blue: 0.96)),
+                style: StrokeStyle(lineWidth: lineWidth, lineCap: .square)
+            )
+        }
+        .accessibilityHidden(true)
+    }
+
+    private func drawArc(in context: inout GraphicsContext, rect: CGRect, start: Angle, end: Angle, color: Color, width: CGFloat) {
+        var path = Path()
+        path.addArc(
+            center: CGPoint(x: rect.midX, y: rect.midY),
+            radius: rect.width / 2,
+            startAngle: start,
+            endAngle: end,
+            clockwise: false
+        )
+        context.stroke(
+            path,
+            with: .color(color),
+            style: StrokeStyle(lineWidth: width, lineCap: .round)
+        )
     }
 }
 
@@ -168,7 +295,7 @@ struct SignInView: View {
             VStack(spacing: 16) {
                 PTextField(placeholder: "Email", text: $email)
                     .keyboardType(.emailAddress)
-                    .textContentType(.emailAddress)
+                    .textContentType(.username)
                     .autocorrectionDisabled()
                     .textInputAutocapitalization(.never)
                 PTextField(placeholder: "Password", text: $password, isSecure: true)
@@ -214,7 +341,6 @@ struct SignInView: View {
     }
 }
 
-// Shared text field component
 struct PTextField: View {
     let placeholder: String
     @Binding var text: String
